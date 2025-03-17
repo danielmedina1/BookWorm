@@ -12,7 +12,6 @@ public class Review implements Parcelable {
     private Libro libro;
     private float puntuacion;
     private String desc;
-
     private Date publicacion;
 
 
