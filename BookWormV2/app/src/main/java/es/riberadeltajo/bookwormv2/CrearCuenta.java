@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -38,6 +39,9 @@ public class CrearCuenta extends AppCompatActivity {
         EditText nomus = findViewById(R.id.usernameUs);
         EditText email = findViewById(R.id.emailUs);
         EditText pass = findViewById(R.id.passwordUs);
+        ArrayList ped = new ArrayList();
+        ArrayList seg = new ArrayList();
+        ArrayList sig = new ArrayList();
 
         crearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +51,9 @@ public class CrearCuenta extends AppCompatActivity {
                 usuario.put("email", email.getText().toString());
                 usuario.put("contraseña", pass.getText().toString());
                 usuario.put("username", nomus.getText().toString());
-                usuario.put("pedidos", "");
+                usuario.put("pedidos", ped);
+                usuario.put("seguidores", seg);
+                usuario.put("siguiendo", sig);
 
                 db.collection("Usuarios").document(email.getText().toString()).get(Source.CACHE)
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

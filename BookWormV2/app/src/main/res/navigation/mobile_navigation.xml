@@ -3,23 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_inicio">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="es.riberadeltajo.bookwormv2.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:id="@+id/nav_inicio"
+        android:name="es.riberadeltajo.bookwormv2.ui.inicio.InicioFragment"
+        android:label="@string/menu_inicio"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="es.riberadeltajo.bookwormv2.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_buscar"
+        android:name="es.riberadeltajo.bookwormv2.ui.buscarlibros.BuscarFragment"
+        android:label="@string/menu_buscar"
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_buscar_to_nav_mostrarLibro"
+            app:destination="@id/nav_mostrarLibro" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="es.riberadeltajo.bookwormv2.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:id="@+id/nav_pedidos"
+        android:name="es.riberadeltajo.bookwormv2.ui.pedidos.PedidosFragment"
+        android:label="@string/menu_pedidos"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="es.riberadeltajo.bookwormv2.ui.perfil.PerfilFragment"
+        android:label="@string/menu_perfil"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_mostrarLibro"
+        android:name="es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment"
+        android:label="@string/menu_mostrarLibro"
+        tools:layout="@layout/fragment_mostrar_libro" />
 </navigation>
