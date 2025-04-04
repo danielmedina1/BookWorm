@@ -79,19 +79,16 @@ public class BuscarFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d("Libro: " + document.getId(), "" + document.getData().get("nombre"));
-                                //Log.d("Libro: " + document.getId(), "" + document.getData().get("autor"));
-                                //Log.d("Libro: " + document.getId(), "" + document.getData().get("precio"));
-                                //Log.d("Libro: " + document.getId(), "" + document.getData().get("isbn"));
-                                //Log.d("Libro: " + document.getId(), "" + document.getData().get("empresa"));
-                                //Log.d("Libro: " + document.getId(), "" + document.getData());
-
                                 String nombre = document.getData().get("nombre") + "";
                                 String autor = document.getData().get("autor") + "";
-                                double precio =  Double.parseDouble(document.getData().get("precio") + "");
-                                int isbn = Integer.parseInt(document.getData().get("isbn") + "");
                                 String empresa = document.getData().get("empresa") + "";
-                                ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa));
+                                String sinopsis = document.getData().get("sinopsis") + "";
+                                float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
+                                double precio =  Double.parseDouble(document.getData().get("precio") + "");
+                                int stock = Integer.parseInt(document.getData().get("stock") + "");
+                                int isbn = Integer.parseInt(document.getData().get("isbn") + "");
+
+                                ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa, sinopsis, valoracion, stock));
                                 ListaLibros.miAdaptador.notifyDataSetChanged();
 
                             }

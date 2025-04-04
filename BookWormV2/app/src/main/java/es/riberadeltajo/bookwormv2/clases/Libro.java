@@ -11,13 +11,14 @@ public class Libro implements Parcelable {
     private String nombre;
     private String autor;
     private String sinopsis;
-    private double puntuacion;
+    private float puntuacion;
     private ArrayList<Review> reviews;
     private double precio;
     private int isbn;
+    private int stock;
     private String empresa;
 
-    public Libro(String nombre, String autor, String sinopsis, double puntuacion, ArrayList<Review> reviews, double precio, int isbn, String empresa) {
+    public Libro(String nombre, String autor, String sinopsis, float puntuacion, ArrayList<Review> reviews, double precio, int isbn, int stock, String empresa) {
         this.nombre = nombre;
         this.autor = autor;
         this.sinopsis = sinopsis;
@@ -25,15 +26,19 @@ public class Libro implements Parcelable {
         this.reviews = reviews;
         this.precio = precio;
         this.isbn = isbn;
+        this.stock = stock;
         this.empresa = empresa;
     }
 
-    public Libro(String nombre, String autor, double precio, int isbn, String empresa) {
+    public Libro(String nombre, String autor, double precio, int isbn, String empresa, String sinopsis, float valoracion, int stock) {
         this.nombre = nombre;
         this.autor = autor;
         this.precio = precio;
         this.isbn = isbn;
         this.empresa = empresa;
+        this.sinopsis = sinopsis;
+        this.puntuacion = valoracion;
+        this.stock = stock;
     }
 
     public Libro() {
@@ -42,8 +47,7 @@ public class Libro implements Parcelable {
     protected Libro(Parcel in) {
         nombre = in.readString();
         sinopsis = in.readString();
-        puntuacion = in.readDouble();
-        reviews = in.createTypedArrayList(Review.CREATOR);
+        puntuacion = in.readFloat();
         precio = in.readDouble();
         isbn = in.readInt();
         empresa = in.readString();
@@ -77,11 +81,11 @@ public class Libro implements Parcelable {
         this.sinopsis = sinopsis;
     }
 
-    public double getPuntuacion() {
+    public float getPuntuacion() {
         return puntuacion;
     }
 
-    public void setPuntuacion(double puntuacion) {
+    public void setPuntuacion(float puntuacion) {
         this.puntuacion = puntuacion;
     }
 
@@ -123,6 +127,14 @@ public class Libro implements Parcelable {
 
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override

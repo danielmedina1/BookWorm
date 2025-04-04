@@ -8,51 +8,26 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 public class Review implements Parcelable {
-    private Usuario usuario;
-    private Libro libro;
-    private float puntuacion;
     private String desc;
     private Date publicacion;
+    private String libro;
+    private float puntuacion;
+    private String usuario;
 
-
-
-    public Review(Usuario usuario, Libro libro, float puntuacion, String desc, Date publicacion) {
-        this.usuario = usuario;
-        this.libro = libro;
-        this.puntuacion = puntuacion;
+    public Review(String desc, Date publicacion, String libro, float puntuacion, String usuario) {
         this.desc = desc;
         this.publicacion = publicacion;
-    }
-
-    public Review() {
-
-    }
-
-    protected Review(Parcel in) {
-        puntuacion = in.readFloat();
-        desc = in.readString();
-    }
-
-
-
-    public static final Creator<Review> CREATOR = new Creator<Review>() {
-        @Override
-        public Review createFromParcel(Parcel in) {
-            return new Review(in);
-        }
-
-        @Override
-        public Review[] newArray(int size) {
-            return new Review[size];
-        }
-    };
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
+        this.libro = libro;
+        this.puntuacion = puntuacion;
         this.usuario = usuario;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public Date getPublicacion() {
@@ -63,11 +38,11 @@ public class Review implements Parcelable {
         this.publicacion = publicacion;
     }
 
-    public Libro getLibro() {
+    public String getLibro() {
         return libro;
     }
 
-    public void setLibro(Libro libro) {
+    public void setLibro(String libro) {
         this.libro = libro;
     }
 
@@ -79,14 +54,13 @@ public class Review implements Parcelable {
         this.puntuacion = puntuacion;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
-
 
     @Override
     public int describeContents() {
@@ -95,8 +69,6 @@ public class Review implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeFloat(puntuacion);
-        dest.writeString(desc);
 
     }
 }

@@ -36,10 +36,11 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.usuario.setText(mValues.get(position).getUsuario().getNombre());
-        holder.libro.setText(mValues.get(position).getLibro().getNombre());
+        holder.usuario.setText(mValues.get(position).getUsuario());
+        holder.libro.setText(mValues.get(position).getLibro());
         holder.contenido.setText(mValues.get(position).getDesc());
         holder.ratingBar.setRating(mValues.get(position).getPuntuacion());
+        holder.ratingBar.setIsIndicator(true);
 
     }
 
@@ -60,7 +61,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
             usuario = binding.nomUsuario;
             libro = binding.nomLibro;
             contenido = binding.contReseA;
-            ratingBar=binding.ratingBar;
+            ratingBar=binding.ratingRes;
         }
 
         @Override

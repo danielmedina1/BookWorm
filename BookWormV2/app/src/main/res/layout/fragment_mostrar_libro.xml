@@ -24,5 +24,133 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.044" />
+
+        <TextView
+            android:id="@+id/autorLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Autor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tituloLibro"
+            app:layout_constraintVertical_bias="0.029" />
+
+        <Button
+            android:id="@+id/carritoLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añadir al carrito"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.071"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sinopsisLibro"
+            app:layout_constraintVertical_bias="0.07" />
+
+        <Button
+            android:id="@+id/reseñaLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dejar reseña"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/raitingLibro"
+            app:layout_constraintVertical_bias="0.05" />
+
+        <TextView
+            android:id="@+id/sinopsisLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sinopsis"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.193" />
+
+        <RatingBar
+            android:id="@+id/raitingLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/valoracionLibro"
+            app:layout_constraintVertical_bias="0.029" />
+
+        <TextView
+            android:id="@+id/valoracionLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valoración de los usuarios"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.528"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/carritoLibro"
+            app:layout_constraintVertical_bias="0.085" />
+
+        <TextView
+            android:id="@+id/stockLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stock del libro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.775"
+            app:layout_constraintStart_toEndOf="@+id/carritoLibro"
+            app:layout_constraintTop_toBottomOf="@+id/sinopsisLibro"
+            app:layout_constraintVertical_bias="0.066" />
+
+        <TextView
+            android:id="@+id/empresaLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empresa"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.954"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.132" />
+
+        <TextView
+            android:id="@+id/isbnLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ISBN"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.132" />
+
+        <TextView
+            android:id="@+id/precioLibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio del libro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.765"
+            app:layout_constraintStart_toEndOf="@+id/carritoLibro"
+            app:layout_constraintTop_toBottomOf="@+id/stockLibro"
+            app:layout_constraintVertical_bias="0.02" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView3"
+            android:name="es.riberadeltajo.bookwormv2.recyclerviews.reviews.ReseñasFragment"
+            android:layout_width="408dp"
+            android:layout_height="290dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reseñaLibro" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

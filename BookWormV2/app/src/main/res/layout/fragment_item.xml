@@ -21,52 +21,58 @@
             android:layout_height="195dp">
 
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/ratingRes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="28dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="84dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/nomUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="16dp"
                 android:text="manolito pues de platra"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/nomLibro"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/nomLibro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginTop="48dp"
                 android:text="El Señor de los Anillos"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold|italic"
+                app:layout_constraintBottom_toTopOf="@+id/contReseña"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/contReseña"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+                app:layout_constraintBottom_toTopOf="@+id/ratingRes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.904"
-                tools:layout_editor_absoluteX="171dp" />
+                app:layout_constraintVertical_bias="0.868" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

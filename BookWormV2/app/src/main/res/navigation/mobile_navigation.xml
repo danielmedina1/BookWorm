@@ -35,5 +35,15 @@
         android:id="@+id/nav_mostrarLibro"
         android:name="es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment"
         android:label="@string/menu_mostrarLibro"
-        tools:layout="@layout/fragment_mostrar_libro" />
+        tools:layout="@layout/fragment_mostrar_libro" >
+        <action
+            android:id="@+id/action_nav_mostrarLibro_to_nav_resenasLibros"
+            app:destination="@id/nav_resenasLibros" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_resenasLibros"
+        android:name="es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment"
+        android:label="@string/menu_resenasLibro"
+        tools:layout="@layout/fragment_resenas" />
 </navigation>

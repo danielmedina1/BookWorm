@@ -27,6 +27,7 @@ public class InicioSesion extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static String nombreusuario = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class InicioSesion extends AppCompatActivity {
                                 //Usuario: prueba1, Contraseña: 1234
                                 if (pass.getText().toString().equals(d.getString("contraseña"))) {
                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    nombreusuario = d.getString("username");
                                     startActivity(i);
                                 } else {
                                     Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();

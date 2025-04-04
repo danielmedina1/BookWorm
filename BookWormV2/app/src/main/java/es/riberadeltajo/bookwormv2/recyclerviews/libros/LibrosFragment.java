@@ -87,8 +87,16 @@ public class LibrosFragment extends Fragment {
         return view;
     }
 
-    public static void iniciarLibro(String nombre) {
+    public static void iniciarLibro(String nombre, String isbn, String autor, String empresa,
+                                    String sinopsis, int stock, float valoracion, double precio) {
         MostrarLibroFragment.tituloLibro = nombre;
+        MostrarLibroFragment.isbnLibro = isbn;
+        MostrarLibroFragment.autorLibro = autor;
+        MostrarLibroFragment.empresaLibro = empresa;
+        MostrarLibroFragment.sinopsisLibro = sinopsis;
+        MostrarLibroFragment.stockLibro = stock;
+        MostrarLibroFragment.valoracionLibro = valoracion;
+        MostrarLibroFragment.precioLibro = precio;
         NavHostFragment.findNavController(l).navigate(R.id.action_nav_buscar_to_nav_mostrarLibro);
 
     }
