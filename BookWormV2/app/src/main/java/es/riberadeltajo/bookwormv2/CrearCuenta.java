@@ -39,9 +39,10 @@ public class CrearCuenta extends AppCompatActivity {
         EditText nomus = findViewById(R.id.usernameUs);
         EditText email = findViewById(R.id.emailUs);
         EditText pass = findViewById(R.id.passwordUs);
-        ArrayList ped = new ArrayList();
+        ArrayList car = new ArrayList();
         ArrayList seg = new ArrayList();
         ArrayList sig = new ArrayList();
+        Boolean ped = false;
 
         crearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +52,10 @@ public class CrearCuenta extends AppCompatActivity {
                 usuario.put("email", email.getText().toString());
                 usuario.put("contraseña", pass.getText().toString());
                 usuario.put("username", nomus.getText().toString());
-                usuario.put("pedidos", ped);
+                usuario.put("carrito", car);
                 usuario.put("seguidores", seg);
                 usuario.put("siguiendo", sig);
+                usuario.put("pedido", ped);
 
                 db.collection("Usuarios").document(email.getText().toString()).get(Source.CACHE)
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

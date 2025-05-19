@@ -12,7 +12,8 @@
     <string name="menu_pedidos">Pedidos</string>
     <string name="menu_perfil">Perfil</string>
     <string name="menu_mostrarLibro">Mostrar Libro</string>
-    <string name="menu_resenasLibro">Dejar Reseña</string>
+    <string name="menu_resenasLibro">Dejar Reseña</string>+
+    <string name="menu_usuarios">Usuarios</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

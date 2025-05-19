@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,16 +30,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.databinding.FragmentResenasBinding;
 import es.riberadeltajo.bookwormv2.ui.inicio.InicioViewModel;
+import es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment;
 
 public class ResenasFragment extends Fragment {
+    private static ResenasFragment r;
 
     private es.riberadeltajo.bookwormv2.databinding.FragmentResenasBinding binding;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String tituloLibro = new String();
+
     public static String usuario = new String();
     private static ArrayList res = new ArrayList();
 
@@ -49,16 +54,13 @@ public class ResenasFragment extends Fragment {
 
         binding = FragmentResenasBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        r = ResenasFragment.this;
 
         Button bpublicar = root.findViewById(R.id.publicarResenaB);
         HashMap resena = new HashMap();
         EditText textR = root.findViewById(R.id.reseñaTexto);
         RatingBar puntR = root.findViewById(R.id.puntuacionReseña);
         Calendar cal = Calendar.getInstance();
-
-
-
-
 
         bpublicar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +71,7 @@ public class ResenasFragment extends Fragment {
                 resena.put("libro", tituloLibro);
                 resena.put("puntuacion", puntR.getRating());
                 resena.put("usuario", usuario);
+                resena.put("emailusuario", InicioSesion.emailusuario);
                 db.collection("Reviews").document("res" + tituloLibro + usuario).set(resena)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -91,15 +94,10 @@ public class ResenasFragment extends Fragment {
                         db.collection("Libros").document(tituloLibro).update("reviews", res);
                     }
                 });
-
-
                 Log.d("Fecha Actual:", cal.getTime() + "");
                 getFragmentManager().popBackStack();
-
             }
         });
-
-
         return root;
     }
 
@@ -107,6 +105,5 @@ public class ResenasFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-
     }
 }

@@ -13,13 +13,28 @@ public class Review implements Parcelable {
     private String libro;
     private float puntuacion;
     private String usuario;
+    private String mail;
 
-    public Review(String desc, Date publicacion, String libro, float puntuacion, String usuario) {
+    public Review(String desc, Date publicacion, String libro, float puntuacion, String usuario, String mail) {
         this.desc = desc;
         this.publicacion = publicacion;
         this.libro = libro;
         this.puntuacion = puntuacion;
         this.usuario = usuario;
+        this.mail = mail;
+    }
+
+
+    public Review(String libro) {
+        this.libro = libro;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getDesc() {

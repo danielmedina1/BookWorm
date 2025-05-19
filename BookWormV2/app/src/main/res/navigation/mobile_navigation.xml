@@ -39,11 +39,21 @@
         <action
             android:id="@+id/action_nav_mostrarLibro_to_nav_resenasLibros"
             app:destination="@id/nav_resenasLibros" />
+        <action
+            android:id="@+id/action_nav_mostrarLibro_to_nav_usuarios"
+            app:destination="@id/nav_usuarios" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_resenasLibros"
         android:name="es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment"
         android:label="@string/menu_resenasLibro"
-        tools:layout="@layout/fragment_resenas" />
+        tools:layout="@layout/fragment_resenas" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_usuarios"
+        android:name="es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment"
+        android:label="@string/menu_usuarios"
+        tools:layout="@layout/fragment_usuarios" />
 </navigation>

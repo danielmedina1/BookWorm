@@ -1,8 +1,13 @@
 package es.riberadeltajo.bookwormv2.clases;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
-public class Usuario {
+public class Usuario implements Parcelable {
     private String nombre;
     private String apellidos;
     private String username;
@@ -11,13 +16,14 @@ public class Usuario {
     private ArrayList<Pedido> pedidos;
     private ArrayList<Usuario> siguiendo;
     private ArrayList<Usuario> seguidores;
+    private boolean ped ;
 
 
     public Usuario() {
 
     }
 
-    public Usuario(String nombre, String apellidos, String username, String password, String email, ArrayList<Pedido> pedidos, ArrayList<Usuario> siguiendo, ArrayList<Usuario> seguidores) {
+    public Usuario(String nombre, String apellidos, String username, String password, String email, ArrayList<Pedido> pedidos, ArrayList<Usuario> siguiendo, ArrayList<Usuario> seguidores, boolean ped) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.username = username;
@@ -26,7 +32,30 @@ public class Usuario {
         this.pedidos = pedidos;
         this.siguiendo = siguiendo;
         this.seguidores = seguidores;
+        this.ped = ped;
     }
+
+    protected Usuario(Parcel in) {
+        nombre = in.readString();
+        apellidos = in.readString();
+        username = in.readString();
+        password = in.readString();
+        email = in.readString();
+        siguiendo = in.createTypedArrayList(Usuario.CREATOR);
+        seguidores = in.createTypedArrayList(Usuario.CREATOR);
+    }
+
+    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
+        public Usuario createFromParcel(Parcel in) {
+            return new Usuario(in);
+        }
+
+        @Override
+        public Usuario[] newArray(int size) {
+            return new Usuario[size];
+        }
+    };
 
     public String getNombre() {
         return nombre;
@@ -90,5 +119,29 @@ public class Usuario {
 
     public void setSeguidores(ArrayList<Usuario> seguidores) {
         this.seguidores = seguidores;
+    }
+
+    public boolean isPed() {
+        return ped;
+    }
+
+    public void setPed(boolean ped) {
+        this.ped = ped;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(nombre);
+        dest.writeString(apellidos);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(email);
+        dest.writeTypedList(siguiendo);
+        dest.writeTypedList(seguidores);
     }
 }

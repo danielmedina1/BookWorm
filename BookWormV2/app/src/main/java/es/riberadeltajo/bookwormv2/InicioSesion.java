@@ -1,10 +1,7 @@
 package es.riberadeltajo.bookwormv2;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,16 +15,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class InicioSesion extends AppCompatActivity {
+import java.util.ArrayList;
 
+import es.riberadeltajo.bookwormv2.recyclerviews.carrito.ListaCarrito;
+
+public class InicioSesion extends AppCompatActivity {
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String nombreusuario = new String();
+    public static String emailusuario = new String();
+    public static  boolean hayPedido = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +54,11 @@ public class InicioSesion extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot d = task.getResult();
-                                //Log.d("Prueba", "datos: "+d.getString("contraseña"));
-                                //Usuario: prueba1, Contraseña: 1234
                                 if (pass.getText().toString().equals(d.getString("contraseña"))) {
                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                     nombreusuario = d.getString("username");
+                                    emailusuario = d.getString("email");
+                                    hayPedido = d.getBoolean("ped");
                                     startActivity(i);
                                 } else {
                                     Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();
@@ -85,13 +86,4 @@ public class InicioSesion extends AppCompatActivity {
         });
 
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if (currentUser != null) {
-//            Toast.makeText(this, "Buenas Tardes", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 }

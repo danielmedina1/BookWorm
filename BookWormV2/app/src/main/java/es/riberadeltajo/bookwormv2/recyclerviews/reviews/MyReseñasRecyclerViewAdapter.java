@@ -1,15 +1,23 @@
 package es.riberadeltajo.bookwormv2.recyclerviews.reviews;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import es.riberadeltajo.bookwormv2.InicioSesion;
+import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentItemBinding;
+import es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment;
+import es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +43,30 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        String userName = mValues.get(position).getUsuario() + "";
+        String mail = mValues.get(position).getMail() + "";
         holder.mItem = mValues.get(position);
         holder.usuario.setText(mValues.get(position).getUsuario());
         holder.libro.setText(mValues.get(position).getLibro());
         holder.contenido.setText(mValues.get(position).getDesc());
         holder.ratingBar.setRating(mValues.get(position).getPuntuacion());
         holder.ratingBar.setIsIndicator(true);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userName.equals(InicioSesion.nombreusuario)) {
+
+                } else {
+                    NavController nc = Navigation.findNavController(v);
+                    Bundle b = new Bundle();
+                    b.putString("username", userName);
+                    b.putString("email", mail);
+                    nc.navigate(R.id.action_nav_mostrarLibro_to_nav_usuarios, b);
+                }
+
+            }
+        });
 
     }
 

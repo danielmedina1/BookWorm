@@ -64,9 +64,6 @@ public class BuscarFragment extends Fragment {
             }
         });
 
-
-
-
         return root;
     }
 

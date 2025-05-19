@@ -1,11 +1,11 @@
 package es.riberadeltajo.bookwormv2.ui.mostrarlibro;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -24,16 +24,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
-import es.riberadeltajo.bookwormv2.clases.Libro;
+import es.riberadeltajo.bookwormv2.clases.Carrito;
+import es.riberadeltajo.bookwormv2.clases.Pedido;
 import es.riberadeltajo.bookwormv2.clases.Review;
-import es.riberadeltajo.bookwormv2.databinding.FragmentHomeBinding;
 import es.riberadeltajo.bookwormv2.databinding.FragmentMostrarLibroBinding;
-import es.riberadeltajo.bookwormv2.recyclerviews.libros.LibrosFragment;
-import es.riberadeltajo.bookwormv2.recyclerviews.libros.ListaLibros;
+import es.riberadeltajo.bookwormv2.recyclerviews.carrito.ListaCarrito;
 import es.riberadeltajo.bookwormv2.recyclerviews.reviews.ListaReseñas;
 import es.riberadeltajo.bookwormv2.ui.inicio.InicioViewModel;
 import es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment;
@@ -48,11 +48,12 @@ public class MostrarLibroFragment extends Fragment {
     public static String sinopsisLibro = new String();
     public static int stockLibro = 0;
     public static float valoracionLibro = 0.0f;
+    public static float p = 0.0f;
     public static double precioLibro = 0;
     private FragmentMostrarLibroBinding binding;
     private static MostrarLibroFragment ml;
-    private static float p = 0.0f;
-    private static int r = 0;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +64,8 @@ public class MostrarLibroFragment extends Fragment {
         binding = FragmentMostrarLibroBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button bres = root.findViewById(R.id.reseñaLibro);
-        cargarReseñas(tituloLibro);
+        Button bcarrito = root.findViewById(R.id.carritoLibro);
+        cargarReseñas(tituloLibro, root);
 
         TextView tit = root.findViewById(R.id.tituloLibro);
         TextView aut = root.findViewById(R.id.autorLibro);
@@ -71,10 +73,10 @@ public class MostrarLibroFragment extends Fragment {
         TextView empr = root.findViewById(R.id.empresaLibro);
         TextView sin = root.findViewById(R.id.sinopsisLibro);
         TextView sto = root.findViewById(R.id.stockLibro);
-        RatingBar val = root.findViewById(R.id.raitingLibro);
+
         TextView pre = root.findViewById(R.id.precioLibro);
 
-        val.setIsIndicator(true);
+
 
         if (tit != null) {
             tit.setText(tituloLibro);
@@ -83,10 +85,76 @@ public class MostrarLibroFragment extends Fragment {
             empr.setText(empresaLibro);
             sin.setText(sinopsisLibro);
             sto.setText("Hay " + stockLibro + " en stock");
-            val.setRating(valoracionLibro);
             pre.setText("Precio: " + precioLibro + "€");
         }
 
+        if (InicioSesion.hayPedido) {
+            if (ListaCarrito.librosCarrito.contains(tituloLibro)) {
+                bcarrito.setText("Quitar de pedidos");
+                int color = ContextCompat.getColor(requireContext(), R.color.black);
+                bcarrito.setBackgroundColor(color);
+            } else {
+                if (stockLibro >= 1) {
+                    bcarrito.setText("Añadir a pedidos");
+                    int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
+                    bcarrito.setBackgroundColor(color);
+                } else {
+                    bcarrito.setText("Sin stock");
+                    int color = ContextCompat.getColor(requireContext(), R.color.black);
+                    bcarrito.setBackgroundColor(color);
+                    bcarrito.setEnabled(false);
+                }
+            }
+
+        } else {
+            bcarrito.setText("Pedido en curso");
+            int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
+            bcarrito.setBackgroundColor(color);
+            bcarrito.setEnabled(false);
+        }
+
+        bcarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stockLibro >= 1) {
+                    if (!ListaCarrito.librosCarrito.contains(tituloLibro)) {
+                        bcarrito.setText("Quitar de pedidos");
+                        int color = ContextCompat.getColor(requireContext(), R.color.black);
+                        bcarrito.setBackgroundColor(color);;
+                        ListaCarrito.carrito.add(new Carrito(tituloLibro, precioLibro));
+                        ListaCarrito.librosCarrito.add(tituloLibro);
+                        stockLibro = stockLibro - 1;
+                        sto.setText("Hay " + stockLibro + " en stock");
+                        db.collection("Libros").document(tituloLibro).update("stock", stockLibro);
+
+                    } else {
+                        if (ListaCarrito.librosCarrito.contains(tituloLibro)) {
+                            bcarrito.setText("Añadir a pedidos");
+                            int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
+                            bcarrito.setBackgroundColor(color);
+                            ListaCarrito.carrito.remove(new Carrito(tituloLibro, precioLibro));
+                            ListaCarrito.librosCarrito.remove(tituloLibro);
+                            stockLibro = stockLibro + 1;
+                            sto.setText("Hay " + stockLibro + " en stock");
+                            db.collection("Libros").document(tituloLibro).update("stock", stockLibro);
+                        }
+                    }
+
+
+
+                } else {
+                    bcarrito.setText("Sin stock");
+                    int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
+                    bcarrito.setBackgroundColor(color);
+                    bcarrito.setEnabled(false);
+                }
+
+
+
+
+
+            }
+        });
 
         bres.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,12 +165,12 @@ public class MostrarLibroFragment extends Fragment {
             }
         });
 
-
-
         return root;
     }
 
-    private void cargarReseñas(String b) {
+    private void cargarReseñas(String b, View root) {
+        RatingBar val = root.findViewById(R.id.raitingLibro);
+        val.setIsIndicator(true);
 
         db.collection("Reviews")
                 .whereEqualTo("libro", b)
@@ -111,28 +179,52 @@ public class MostrarLibroFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
+                            ListaReseñas.reseñas.clear();
                             for(QueryDocumentSnapshot document : task.getResult()) {
                                 String descripcion = document.getData().get("descripcion") + "";
-
                                 Timestamp ts = (Timestamp) document.getData().get("fecha");
                                 Date fecha = ts.toDate();
                                 String libro = document.getData().get("libro") + "";
                                 String usuario = document.getData().get("usuario") + "";
+                                String mail = document.getData().get("emailusuario") + "";
                                 float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
-                                p = p + valoracion;
-
-                                ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario));
+                                ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario, mail));
+                                val.setRating(calcularPuntuacion(b));
                                 ListaReseñas.miAdaptador.notifyDataSetChanged();
-                                r++;
 
                             }
                         } else {
                             Log.d("ERROR", "---Error al conseguir los datos---");
                         }
-
                     }
                 });
-            valoracionLibro = p/r;
+    }
+
+    private float calcularPuntuacion(String b) {
+
+            db.collection("Reviews")
+                    .whereEqualTo("libro", b)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()) {
+                                p = 0.0f;
+                                int r = 0;
+                                for(QueryDocumentSnapshot document : task.getResult()) {
+                                    float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
+                                    p = p + valoracion;
+                                    r++;
+                                    Log.d("P V", ""+p);
+                                }
+                                p = p/r;
+                            }
+
+                            Log.d("P FINAL", ""+p);
+                        }
+
+                    });
+            return p;
 
     }
 
