@@ -35,6 +35,7 @@ import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentMostrarLibroBinding;
 import es.riberadeltajo.bookwormv2.recyclerviews.carrito.ListaCarrito;
 import es.riberadeltajo.bookwormv2.recyclerviews.reviews.ListaReseñas;
+import es.riberadeltajo.bookwormv2.recyclerviews.reviews.MyReseñasRecyclerViewAdapter;
 import es.riberadeltajo.bookwormv2.ui.inicio.InicioViewModel;
 import es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment;
 
@@ -66,6 +67,7 @@ public class MostrarLibroFragment extends Fragment {
         Button bres = root.findViewById(R.id.reseñaLibro);
         Button bcarrito = root.findViewById(R.id.carritoLibro);
         cargarReseñas(tituloLibro, root);
+        MyReseñasRecyclerViewAdapter.ruta = R.id.action_nav_mostrarLibro_to_nav_usuarios;
 
         TextView tit = root.findViewById(R.id.tituloLibro);
         TextView aut = root.findViewById(R.id.autorLibro);

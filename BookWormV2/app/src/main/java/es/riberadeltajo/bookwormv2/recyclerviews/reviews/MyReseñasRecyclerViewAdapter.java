@@ -1,5 +1,6 @@
 package es.riberadeltajo.bookwormv2.recyclerviews.reviews;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,10 +13,17 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentItemBinding;
+import es.riberadeltajo.bookwormv2.recyclerviews.libros.LibrosFragment;
+import es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment;
 import es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment;
 import es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment;
 
@@ -26,6 +34,8 @@ import java.util.List;
 public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñasRecyclerViewAdapter.ViewHolder> {
 
     private final List<Review> mValues;
+    public static int ruta;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private Context context;
 
@@ -45,6 +55,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
     public void onBindViewHolder(final ViewHolder holder, int position) {
         String userName = mValues.get(position).getUsuario() + "";
         String mail = mValues.get(position).getMail() + "";
+        String titLibro= mValues.get(position).getLibro() + "";
         holder.mItem = mValues.get(position);
         holder.usuario.setText(mValues.get(position).getUsuario());
         holder.libro.setText(mValues.get(position).getLibro());
@@ -56,13 +67,54 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
             @Override
             public void onClick(View v) {
                 if (userName.equals(InicioSesion.nombreusuario)) {
+                    if (ruta == R.id.action_nav_perfil_to_nav_mostrarLibro) {
+                        db.collection("Libros").document(titLibro).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot d = task.getResult();
+                                NavController nc = Navigation.findNavController(v);
+                                MostrarLibroFragment.tituloLibro = d.getString("nombre");
+                                MostrarLibroFragment.isbnLibro = d.get("isbn") + "";
+                                MostrarLibroFragment.autorLibro = d.getString("autor");
+                                MostrarLibroFragment.empresaLibro = d.getString("empresa");
+                                MostrarLibroFragment.sinopsisLibro = d.getString("sinopsis");
+                                MostrarLibroFragment.stockLibro = Integer.parseInt(d.get("stock") + "");
+                                MostrarLibroFragment.valoracionLibro = Float.parseFloat(d.get("puntuacion") + "");
+                                MostrarLibroFragment.precioLibro = Double.parseDouble(d.get("precio") + "");
+                                nc.navigate(ruta);
+                            }
+                        });
+                    }
 
                 } else {
-                    NavController nc = Navigation.findNavController(v);
-                    Bundle b = new Bundle();
-                    b.putString("username", userName);
-                    b.putString("email", mail);
-                    nc.navigate(R.id.action_nav_mostrarLibro_to_nav_usuarios, b);
+                    if (ruta == R.id.action_nav_perfil_to_nav_mostrarLibro) {
+                        db.collection("Libros").document(titLibro).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot d = task.getResult();
+                                NavController nc = Navigation.findNavController(v);
+                                MostrarLibroFragment.tituloLibro = d.getString("nombre");
+                                MostrarLibroFragment.isbnLibro = d.get("isbn") + "";
+                                MostrarLibroFragment.autorLibro = d.getString("autor");
+                                MostrarLibroFragment.empresaLibro = d.getString("empresa");
+                                MostrarLibroFragment.sinopsisLibro = d.getString("sinopsis");
+                                MostrarLibroFragment.stockLibro = Integer.parseInt(d.get("stock") + "");
+                                MostrarLibroFragment.valoracionLibro = Float.parseFloat(d.get("puntuacion") + "");
+                                MostrarLibroFragment.precioLibro = Double.parseDouble(d.get("precio") + "");
+                                nc.navigate(ruta);
+                            }
+                        });
+
+
+                    } else {
+                        NavController nc = Navigation.findNavController(v);
+                        Bundle b = new Bundle();
+                        b.putString("username", userName);
+                        b.putString("email", mail);
+                        nc.navigate(ruta, b);
+                    }
+
+
                 }
 
             }

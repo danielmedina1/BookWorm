@@ -59,6 +59,8 @@ public class MyCarritoRecyclerViewAdapter extends RecyclerView.Adapter<MyCarrito
                     ListaCarrito.carrito.remove(pos);
                     ListaCarrito.librosCarrito.remove(pos);
                     notifyItemRemoved(pos);
+                    ListaCarrito.miAdaptador.notifyDataSetChanged();
+
 
                     db.collection("Libros").document(titulo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override

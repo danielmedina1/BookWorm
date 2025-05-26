@@ -9,7 +9,11 @@
         android:id="@+id/nav_inicio"
         android:name="es.riberadeltajo.bookwormv2.ui.inicio.InicioFragment"
         android:label="@string/menu_inicio"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_inicio_to_nav_usuarios"
+            app:destination="@id/nav_usuarios" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_buscar"
@@ -30,7 +34,14 @@
         android:id="@+id/nav_perfil"
         android:name="es.riberadeltajo.bookwormv2.ui.perfil.PerfilFragment"
         android:label="@string/menu_perfil"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_perfil" >
+        <action
+            android:id="@+id/action_nav_perfil_to_nav_mostrarLibro"
+            app:destination="@id/nav_mostrarLibro" />
+        <action
+            android:id="@+id/action_nav_perfil_to_nav_cambio"
+            app:destination="@id/nav_cambio" />
+    </fragment>
     <fragment
         android:id="@+id/nav_mostrarLibro"
         android:name="es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment"
@@ -56,4 +67,10 @@
         android:name="es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment"
         android:label="@string/menu_usuarios"
         tools:layout="@layout/fragment_usuarios" />
+    <fragment
+        android:id="@+id/nav_cambio"
+        android:name="es.riberadeltajo.bookwormv2.ui.cambioinformacion.CambioInfoFragment"
+        android:label="@string/menu_cambio"
+        tools:layout="@layout/fragment_cambio_info" />
+
 </navigation>

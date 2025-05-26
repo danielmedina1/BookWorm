@@ -37,9 +37,16 @@ public class PedidosFragment extends Fragment {
         View root = binding.getRoot();
         Button realizarPedido = root.findViewById(R.id.realizarPedido);
         if(InicioSesion.hayPedido) {
-           realizarPedido.setText("Realizar pedido");
-            int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
-            realizarPedido.setBackgroundColor(color);
+            if (ListaCarrito.carrito.size() >= 1) {
+                realizarPedido.setText("Realizar pedido");
+                int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
+                realizarPedido.setBackgroundColor(color);
+            } else {
+                realizarPedido.setText("Selecciona algun libro");
+                int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
+                realizarPedido.setBackgroundColor(color);
+                realizarPedido.setEnabled(false);
+            }
         } else {
             realizarPedido.setText("Cancelar pedido");
             int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
@@ -49,7 +56,6 @@ public class PedidosFragment extends Fragment {
         realizarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ListaCarrito.carrito.size() >= 1) {
                     if(InicioSesion.hayPedido == false) {
                         HashMap pedido = new HashMap();
                         double totalPrecio = 0.0f;
@@ -72,9 +78,7 @@ public class PedidosFragment extends Fragment {
                         InicioSesion.hayPedido = false;
 
                     }
-                } else {
-                    Log.d("SELECCIONA ALGUN LIBRO", "SELECCIONA ALGUN LIBRO");
-                }
+
 
 
             }
