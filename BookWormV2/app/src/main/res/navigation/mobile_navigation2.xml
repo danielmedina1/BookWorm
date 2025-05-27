@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@+id/nav_recibidos">
+
+    <fragment
+        android:id="@+id/nav_recibidos"
+        android:name="es.riberadeltajo.bookwormv2.empresa.recibidos.RecibidosFragment"
+        android:label="@string/menu_recibidos"
+        tools:layout="@layout/fragment_recibidos" />
+
+    <fragment
+        android:id="@+id/nav_gestion"
+        android:name="es.riberadeltajo.bookwormv2.empresa.gestion.GestionFragment"
+        android:label="@string/menu_gestion"
+        tools:layout="@layout/fragment_gestion" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="es.riberadeltajo.bookwormv2.empresa.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+</navigation>

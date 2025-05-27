@@ -1,14 +1,11 @@
 package es.riberadeltajo.bookwormv2.recyclerviews.libros;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,8 +18,7 @@ import android.view.ViewGroup;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import es.riberadeltajo.bookwormv2.R;
-import es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment;
-import es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroViewModel;
+import es.riberadeltajo.bookwormv2.usuario.mostrarlibro.MostrarLibroFragment;
 
 /**
  * A fragment representing a list of Items.

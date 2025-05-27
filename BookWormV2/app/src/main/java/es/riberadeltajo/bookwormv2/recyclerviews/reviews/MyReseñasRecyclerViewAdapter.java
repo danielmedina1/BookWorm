@@ -22,12 +22,8 @@ import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentItemBinding;
-import es.riberadeltajo.bookwormv2.recyclerviews.libros.LibrosFragment;
-import es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment;
-import es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment;
-import es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment;
+import es.riberadeltajo.bookwormv2.usuario.mostrarlibro.MostrarLibroFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -55,7 +55,7 @@ public class CrearCuenta extends AppCompatActivity {
                 usuario.put("carrito", car);
                 usuario.put("seguidores", seg);
                 usuario.put("siguiendo", sig);
-                usuario.put("pedido", ped);
+                usuario.put("ped", ped);
 
                 db.collection("Usuarios").document(email.getText().toString()).get(Source.CACHE)
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

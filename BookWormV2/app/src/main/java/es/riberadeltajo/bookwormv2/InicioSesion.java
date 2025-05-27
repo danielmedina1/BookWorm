@@ -28,6 +28,7 @@ public class InicioSesion extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String nombreusuario = new String();
     public static String emailusuario = new String();
+    public static String emailempresa = new String();
     public static  boolean hayPedido = false;
 
 
@@ -48,29 +49,39 @@ public class InicioSesion extends AppCompatActivity {
         biniciarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Usuarios").document(email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                db.collection("Usuarios").document(email.getText().toString()).get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        db.collection("Usuarios").document(email.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                DocumentSnapshot d = task.getResult();
-                                if (pass.getText().toString().equals(d.getString("contraseña"))) {
-                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                                    nombreusuario = d.getString("username");
-                                    emailusuario = d.getString("email");
-                                    hayPedido = d.getBoolean("ped");
-                                    startActivity(i);
-                                } else {
-                                    Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(InicioSesion.this, "La cuenta con el correo electronico introducido no existe", Toast.LENGTH_SHORT).show();
+                        DocumentSnapshot d = documentSnapshot;
+                        if (pass.getText().toString().equals(d.getString("contraseña"))) {
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            nombreusuario = d.getString("username");
+                            emailusuario = d.getString("email");
+                            hayPedido = d.getBoolean("ped");
+                            startActivity(i);
+                        } else {
+                            db.collection("Empresas").document(email.getText().toString()).get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            DocumentSnapshot d = documentSnapshot;
+                                            if (pass.getText().toString().equals(d.getString("password"))) {
+                                                Intent i = new Intent(getApplicationContext(), MainActivity2.class);
+                                                emailempresa = d.getString("email");
+                                                startActivity(i);
+                                            } else {
+                                                Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(InicioSesion.this, "La cuenta con el correo electronico introducido no existe", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+
                     }
                 });
             }

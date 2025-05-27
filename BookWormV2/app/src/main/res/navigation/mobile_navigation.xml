@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_inicio"
-        android:name="es.riberadeltajo.bookwormv2.ui.inicio.InicioFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.inicio.InicioFragment"
         android:label="@string/menu_inicio"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_inicio" >
         <action
             android:id="@+id/action_nav_inicio_to_nav_usuarios"
             app:destination="@id/nav_usuarios" />
@@ -17,9 +17,9 @@
 
     <fragment
         android:id="@+id/nav_buscar"
-        android:name="es.riberadeltajo.bookwormv2.ui.buscarlibros.BuscarFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.buscarlibros.BuscarFragment"
         android:label="@string/menu_buscar"
-        tools:layout="@layout/fragment_gallery" >
+        tools:layout="@layout/fragment_buscar" >
         <action
             android:id="@+id/action_nav_buscar_to_nav_mostrarLibro"
             app:destination="@id/nav_mostrarLibro" />
@@ -27,12 +27,12 @@
 
     <fragment
         android:id="@+id/nav_pedidos"
-        android:name="es.riberadeltajo.bookwormv2.ui.pedidos.PedidosFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.pedidos.PedidosFragment"
         android:label="@string/menu_pedidos"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_pedidos" />
     <fragment
         android:id="@+id/nav_perfil"
-        android:name="es.riberadeltajo.bookwormv2.ui.perfil.PerfilFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.perfil.PerfilFragment"
         android:label="@string/menu_perfil"
         tools:layout="@layout/fragment_perfil" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_mostrarLibro"
-        android:name="es.riberadeltajo.bookwormv2.ui.mostrarlibro.MostrarLibroFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.mostrarlibro.MostrarLibroFragment"
         android:label="@string/menu_mostrarLibro"
         tools:layout="@layout/fragment_mostrar_libro" >
         <action
@@ -57,19 +57,19 @@
 
     <fragment
         android:id="@+id/nav_resenasLibros"
-        android:name="es.riberadeltajo.bookwormv2.ui.reseñas.ResenasFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.reseñas.ResenasFragment"
         android:label="@string/menu_resenasLibro"
         tools:layout="@layout/fragment_resenas" >
     </fragment>
 
     <fragment
         android:id="@+id/nav_usuarios"
-        android:name="es.riberadeltajo.bookwormv2.ui.usuarios.UsuariosFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.usuarios.UsuariosFragment"
         android:label="@string/menu_usuarios"
         tools:layout="@layout/fragment_usuarios" />
     <fragment
         android:id="@+id/nav_cambio"
-        android:name="es.riberadeltajo.bookwormv2.ui.cambioinformacion.CambioInfoFragment"
+        android:name="es.riberadeltajo.bookwormv2.usuario.cambioinformacion.CambioInfoFragment"
         android:label="@string/menu_cambio"
         tools:layout="@layout/fragment_cambio_info" />
 
