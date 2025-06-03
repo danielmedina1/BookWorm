@@ -38,6 +38,7 @@ public class ResenasFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String tituloLibro = new String();
 
+
     public static String usuario = new String();
     private static ArrayList res = new ArrayList();
 
@@ -78,17 +79,6 @@ public class ResenasFragment extends Fragment {
                                 Log.d("No Hecho", "Hecho");
                             }
                         });
-                db.collection("Libros").document(tituloLibro).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot ds = task.getResult();
-                        String re = "res" + tituloLibro + usuario;
-                        res = (ArrayList) ds.get("reviews");
-                        res.add(re);
-                        db.collection("Libros").document(tituloLibro).update("reviews", res);
-                    }
-                });
-                Log.d("Fecha Actual:", cal.getTime() + "");
                 getFragmentManager().popBackStack();
             }
         });

@@ -1,5 +1,7 @@
 package es.riberadeltajo.bookwormv2.usuario.perfil;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import es.riberadeltajo.bookwormv2.InicioSesion;
+import es.riberadeltajo.bookwormv2.MainActivity;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentPerfilBinding;
@@ -46,12 +49,15 @@ public class PerfilFragment extends Fragment {
 
         MyReseñasRecyclerViewAdapter.ruta = R.id.action_nav_perfil_to_nav_mostrarLibro;
 
+
         binding = FragmentPerfilBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         TextView tituloPerfil = root.findViewById(R.id.perfilTitulo);
         TextView seguidoresPerfil = root.findViewById(R.id.perfilSeguidores);
         TextView siguiendoPerfil = root.findViewById(R.id.perfilSeguidos);
         Button cambiarInfo = root.findViewById(R.id.cambiarInformacion);
+        Button cerrarSesion = root.findViewById(R.id.cerrarSesion);
         tituloPerfil.setText(" ");
         seguidoresPerfil.setText(" ");
         siguiendoPerfil.setText(" ");
@@ -78,6 +84,16 @@ public class PerfilFragment extends Fragment {
             public void onClick(View v) {
                 NavController nc = Navigation.findNavController(v);
                 nc.navigate(R.id.action_nav_perfil_to_nav_cambio);
+            }
+        });
+
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).cerrarSesion();
+                }
+
             }
         });
 

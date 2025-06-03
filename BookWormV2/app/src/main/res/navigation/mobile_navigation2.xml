@@ -15,11 +15,21 @@
         android:id="@+id/nav_gestion"
         android:name="es.riberadeltajo.bookwormv2.empresa.gestion.GestionFragment"
         android:label="@string/menu_gestion"
-        tools:layout="@layout/fragment_gestion" />
+        tools:layout="@layout/fragment_gestion" >
+        <action
+            android:id="@+id/action_nav_gestion_to_nav_editar"
+            app:destination="@id/nav_editar" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="es.riberadeltajo.bookwormv2.empresa.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:id="@+id/nav_cerrar_sesion"
+        android:name="es.riberadeltajo.bookwormv2.empresa.emperfil.SlideshowFragment"
+        android:label="@string/menu_cerrar_sesion"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_editar"
+        android:name="es.riberadeltajo.bookwormv2.empresa.editar.EditarFragment"
+        android:label="@string/menu_editar"
+        tools:layout="@layout/fragment_editar" />
 </navigation>

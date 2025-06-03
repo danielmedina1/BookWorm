@@ -50,7 +50,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         String userName = mValues.get(position).getUsuario() + "";
-        String mail = mValues.get(position).getMail() + "";
+        String mail = mValues.get(position).getCodUser() + "";
         String titLibro= mValues.get(position).getLibro() + "";
         holder.mItem = mValues.get(position);
         holder.usuario.setText(mValues.get(position).getUsuario());

@@ -37,6 +37,7 @@ public class MyLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyLibrosRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        String idLibro = mValues.get(position).getIdLibro();
         String titulo = mValues.get(position).getNombre();
         String isbn = mValues.get(position).getIsbn() + "";
         String autor = mValues.get(position).getAutor();
@@ -49,7 +50,7 @@ public class MyLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyLibrosRe
 
         holder.mTitulo.setText(mValues.get(position).getNombre());
         holder.mAutor.setText(mValues.get(position).getAutor());
-        holder.mPrecio.setText(mValues.get(position).getPrecio() + "");
+        holder.mPrecio.setText(mValues.get(position).getPrecio() + "€");
         holder.mIsbn.setText(mValues.get(position).getIsbn() + "");
         holder.mEmpresa.setText(mValues.get(position).getEmpresa());
 
@@ -58,7 +59,7 @@ public class MyLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyLibrosRe
             @Override
             public void onClick(View v) {
                 Log.d("Prueba al clickar", titulo);
-                LibrosFragment.iniciarLibro(titulo, isbn, autor, empresa, sinopsis, stock, valoracion, precio);
+                LibrosFragment.iniciarLibro(titulo, isbn, autor, empresa, sinopsis, stock, valoracion, precio, idLibro);
             }
         });
 

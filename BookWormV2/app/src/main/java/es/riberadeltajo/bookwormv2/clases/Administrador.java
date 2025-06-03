@@ -5,5 +5,4 @@ import java.util.ArrayList;
 public class Administrador {
     private String nombre;
     private String password;
-    private ArrayList<Reporte> reportes;
 }

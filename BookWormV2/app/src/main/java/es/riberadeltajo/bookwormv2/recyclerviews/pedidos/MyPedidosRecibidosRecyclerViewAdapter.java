@@ -43,9 +43,9 @@ public class MyPedidosRecibidosRecyclerViewAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        String delPed = mValues.get(position).getEmaiUser() + "";
+        String delPed = mValues.get(position).getCodUser() + "";
         holder.mItem = mValues.get(position);
-        holder.usuarioPedido.setText(mValues.get(position).getEmaiUser() + "");
+        holder.usuarioPedido.setText(mValues.get(position).getCodUser() + "");
         holder.contenidoPedido.setText(mValues.get(position).getLibros().toString() + "");
         holder.precioPedido.setText(mValues.get(position).getPrecioTotal() + "");
 
@@ -54,24 +54,11 @@ public class MyPedidosRecibidosRecyclerViewAdapter extends RecyclerView.Adapter<
             public void onClick(View v) {
                 int pos = holder.getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
+                    db.collection("Pedidos").document(mValues.get(pos).getCodPed()).update("estado", 3);
                     ListaPedidos.pedidos.remove(pos);
                     notifyItemRemoved(pos);
                     ListaPedidos.miAdaptador.notifyDataSetChanged();
-                    db.collection("Pedidos")
-                            .whereEqualTo("email", delPed)
-                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()){
-                                        for(QueryDocumentSnapshot d : task.getResult()) {
-                                            db.collection("Pedidos")
-                                                    .document(d.getId()).delete();
-                                        }
-                                    }
-                                }
-                            });
-                    db.collection("Usuarios").document(delPed)
-                            .update("ped", false);
+
                 }
 
             }

@@ -84,7 +84,8 @@ public class LibrosFragment extends Fragment {
     }
 
     public static void iniciarLibro(String nombre, String isbn, String autor, String empresa,
-                                    String sinopsis, int stock, float valoracion, double precio) {
+                                    String sinopsis, int stock, float valoracion, double precio, String idLibro) {
+        MostrarLibroFragment.idLibro = idLibro;
         MostrarLibroFragment.tituloLibro = nombre;
         MostrarLibroFragment.isbnLibro = isbn;
         MostrarLibroFragment.autorLibro = autor;

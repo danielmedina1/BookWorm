@@ -29,7 +29,11 @@
         android:id="@+id/nav_pedidos"
         android:name="es.riberadeltajo.bookwormv2.usuario.pedidos.PedidosFragment"
         android:label="@string/menu_pedidos"
-        tools:layout="@layout/fragment_pedidos" />
+        tools:layout="@layout/fragment_pedidos" >
+        <action
+            android:id="@+id/action_nav_pedidos_to_nav_productos_carrito"
+            app:destination="@id/nav_productos_carrito" />
+    </fragment>
     <fragment
         android:id="@+id/nav_perfil"
         android:name="es.riberadeltajo.bookwormv2.usuario.perfil.PerfilFragment"
@@ -72,5 +76,14 @@
         android:name="es.riberadeltajo.bookwormv2.usuario.cambioinformacion.CambioInfoFragment"
         android:label="@string/menu_cambio"
         tools:layout="@layout/fragment_cambio_info" />
+    <fragment
+        android:id="@+id/nav_productos_carrito"
+        android:name="es.riberadeltajo.bookwormv2.usuario.productoscarrito.ProductosCarritoFragment"
+        android:label="@string/productos_carrito"
+        tools:layout="@layout/fragment_productos_carrito" >
+        <action
+            android:id="@+id/action_nav_productos_carrito_to_nav_mostrarLibro"
+            app:destination="@id/nav_mostrarLibro" />
+    </fragment>
 
 </navigation>

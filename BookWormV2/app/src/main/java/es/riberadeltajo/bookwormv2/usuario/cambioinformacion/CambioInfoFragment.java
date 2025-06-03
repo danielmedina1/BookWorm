@@ -32,6 +32,7 @@ import java.util.Map;
 import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.databinding.FragmentCambioInfoBinding;
+import es.riberadeltajo.bookwormv2.recyclerviews.reviews.ListaReseñas;
 
 public class CambioInfoFragment extends Fragment {
 
@@ -49,6 +50,8 @@ public class CambioInfoFragment extends Fragment {
         View root = binding.getRoot();
 
         EditText edNombre = root.findViewById(R.id.editNombre);
+        Log.d("EddNombre", "" + edNombre.getText());
+        Log.d("Null", "" + null);
         EditText edApellidos = root.findViewById(R.id.editApellidos);
         EditText edUsername = root.findViewById(R.id.editUsername);
         EditText edContraseña = root.findViewById(R.id.editContrasena);
@@ -58,49 +61,51 @@ public class CambioInfoFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot d = task.getResult();
-                edNombre.setText("" + d.getString("nombre"));
+                edNombre.setText("" + d.get("nombre"));
+                Log.d("Nombre", "" + d.get("nombre"));
                 edApellidos.setText("" + d.getString("apellidos"));
                 edUsername.setText("" + d.getString("username"));
                 edContraseña.setText("" + d.getString("contraseña"));
             }
         });
-
         gCambios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edNombre.getText().toString().equals(null) || edApellidos.getText().toString().equals(null) ||
-                        edUsername.getText().toString().equals(null) || edContraseña.getText().toString().equals(null)) {
+                if (edNombre.getText().toString().equals("") || edApellidos.getText().toString().equals("") ||
+                        edUsername.getText().toString().equals("") || edContraseña.getText().toString().equals("")) {
                     Toast.makeText(getContext(), "Uno de los campos está vacío", Toast.LENGTH_SHORT).show();
                 } else {
+                    InicioSesion.nombreusuario = edNombre.getText().toString();
                     db.collection("Usuarios").document(InicioSesion.emailusuario)
                             .update("nombre", edNombre.getText().toString(), "apellidos", edApellidos.getText().toString(),
                                     "username", edUsername.getText().toString(), "contraseña", edContraseña.getText().toString());
 
-                    db.collection("Reviews").whereEqualTo("usuario", InicioSesion.nombreusuario)
+                    db.collection("Reviews").whereEqualTo("emailusuario", InicioSesion.emailusuario)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for(QueryDocumentSnapshot d : task.getResult()) {
-                                DocumentReference ref = d.getReference();
-                                Map update = new HashMap();
-                                update.put("usuario", edUsername.getText().toString() + "");
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    for(QueryDocumentSnapshot d : task.getResult()) {
+                                        DocumentReference ref = d.getReference();
+                                        Map update = new HashMap();
+                                        update.put("usuario", edUsername.getText().toString() + "");
 
-                                ref.update(update)
-                                        .addOnSuccessListener(new OnSuccessListener() {
-                                            @Override
-                                            public void onSuccess(Object o) {
-                                                Log.d("Actualizar Documento", "Exito " + ref.getId());
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d("Actualizar Documento", "Fracaso " + ref.getId());
-                                            }
-                                        });
+                                        ref.update(update)
+                                                .addOnSuccessListener(new OnSuccessListener() {
+                                                    @Override
+                                                    public void onSuccess(Object o) {
+                                                        Log.d("Actualizar Documento", "Exito " + ref.getId());
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d("Actualizar Documento", "Fracaso " + ref.getId());
+                                                    }
+                                                });
 
-                            }
-                        }
-                    });
+                                    }
+                                }
+                            });
+                    ListaReseñas.miAdaptador.notifyDataSetChanged();
                     getFragmentManager().popBackStack();
                 }
                 Log.d("Click", "Clickado");
@@ -108,14 +113,14 @@ public class CambioInfoFragment extends Fragment {
             }
         });
 
-        return inflater.inflate(R.layout.fragment_cambio_info, container, false);
+
+        return root;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(CambioInfoViewModel.class);
-        // TODO: Use the ViewModel
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
 }

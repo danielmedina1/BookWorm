@@ -2,6 +2,7 @@ package es.riberadeltajo.bookwormv2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,42 +56,46 @@ public class CrearCuenta extends AppCompatActivity {
                 usuario.put("carrito", car);
                 usuario.put("seguidores", seg);
                 usuario.put("siguiendo", sig);
-                usuario.put("ped", ped);
 
-                db.collection("Usuarios").document(email.getText().toString()).get(Source.CACHE)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Toast.makeText(CrearCuenta.this, "Este email ya ha sido registrado", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        db.collection("Usuarios").document(email.getText().toString()).set(usuario)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                if (!nom.getText().toString().equals("") && !ape.getText().toString().equals("") && !email.getText().toString().equals("") &&
+                        !pass.getText().toString().equals("") && !nomus.getText().toString().equals("")) {
+                    if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()) {
+                        Toast.makeText(CrearCuenta.this, "Correo Inválido", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.collection("Usuarios").document(email.getText().toString()).get(Source.CACHE)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(CrearCuenta.this, "Cuenta creada con exito", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(getApplicationContext(), InicioSesion.class);
-                                        startActivity(i);
-
-
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        Toast.makeText(CrearCuenta.this, "Este email ya ha sido registrado", Toast.LENGTH_SHORT).show();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(CrearCuenta.this, "Los datos introducidos son incorrectos", Toast.LENGTH_SHORT).show();
+                                        db.collection("Usuarios").document().set(usuario)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        Toast.makeText(CrearCuenta.this, "Cuenta creada con exito", Toast.LENGTH_SHORT).show();
+                                                        Intent i = new Intent(getApplicationContext(), InicioSesion.class);
+                                                        startActivity(i);
+
+
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(CrearCuenta.this, "Los datos introducidos son incorrectos", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
                                     }
                                 });
                     }
-                });
 
 
+                } else {
+                    Toast.makeText(CrearCuenta.this, "No se han introducido todos los datos", Toast.LENGTH_SHORT).show();
 
-
-
-
-
+                }
 
 
             }

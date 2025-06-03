@@ -13,15 +13,16 @@ public class Review implements Parcelable {
     private String libro;
     private float puntuacion;
     private String usuario;
-    private String mail;
+    private String codUser;
+    private String codLibro;
 
-    public Review(String desc, Date publicacion, String libro, float puntuacion, String usuario, String mail) {
+    public Review(String desc, Date publicacion, String libro, float puntuacion, String usuario, String codUser) {
         this.desc = desc;
         this.publicacion = publicacion;
         this.libro = libro;
         this.puntuacion = puntuacion;
         this.usuario = usuario;
-        this.mail = mail;
+        this.codUser = codUser;
     }
 
 
@@ -29,12 +30,33 @@ public class Review implements Parcelable {
         this.libro = libro;
     }
 
-    public String getMail() {
-        return mail;
+    protected Review(Parcel in) {
+        desc = in.readString();
+        libro = in.readString();
+        puntuacion = in.readFloat();
+        usuario = in.readString();
+        codUser = in.readString();
+        codLibro = in.readString();
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public static final Creator<Review> CREATOR = new Creator<Review>() {
+        @Override
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
+        }
+
+        @Override
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
+
+    public String getCodUser() {
+        return codUser;
+    }
+
+    public void setCodUser(String codUser) {
+        this.codUser = codUser;
     }
 
     public String getDesc() {
@@ -84,6 +106,11 @@ public class Review implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-
+        dest.writeString(desc);
+        dest.writeString(libro);
+        dest.writeFloat(puntuacion);
+        dest.writeString(usuario);
+        dest.writeString(codUser);
+        dest.writeString(codLibro);
     }
 }

@@ -1,11 +1,15 @@
 package es.riberadeltajo.bookwormv2.clases;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Pedido {
     private ArrayList libros;
     private double precioTotal;
-    private String emaiUser;
+    private Date fecha;
+    private int estado;
+    private String codUser;
+    private String codPed;
 
     public ArrayList getLibros() {
         return libros;
@@ -23,17 +27,51 @@ public class Pedido {
         this.precioTotal = precioTotal;
     }
 
-    public String getEmaiUser() {
-        return emaiUser;
+    public String getCodUser() {
+        return codUser;
     }
 
-    public void setEmaiUser(String emaiUser) {
-        this.emaiUser = emaiUser;
+    public void setCodUser(String codUser) {
+        this.codUser = codUser;
     }
 
-    public Pedido(ArrayList libros, double precioTotal, String emaiUser) {
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getCodPed() {
+        return codPed;
+    }
+
+    public void setCodPed(String codPed) {
+        this.codPed = codPed;
+    }
+
+    public Pedido(ArrayList libros, double precioTotal, Date fecha, int estado, String codUser) {
         this.libros = libros;
         this.precioTotal = precioTotal;
-        this.emaiUser = emaiUser;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.codUser = codUser;
+    }
+    public Pedido(ArrayList libros, double precioTotal, Date fecha, int estado, String codUser, String codPed) {
+        this.libros = libros;
+        this.precioTotal = precioTotal;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.codUser = codUser;
+        this.codPed = codPed;
     }
 }

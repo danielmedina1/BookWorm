@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Libro;
 import es.riberadeltajo.bookwormv2.databinding.FragmentBuscarBinding;
 import es.riberadeltajo.bookwormv2.recyclerviews.libros.ListaLibros;
@@ -37,27 +38,30 @@ public class BuscarFragment extends Fragment {
         binding = FragmentBuscarBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        EditText e = binding.buscarLibro;
+        EditText e = root.findViewById(R.id.buscarLibro);
         Log.d("Busqueda", e.getText().toString());
 
         e.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (ListaLibros.libros.isEmpty())
-                    cargarDatos(e.getText().toString());
-
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                ListaLibros.libros.clear();
-                ListaLibros.miAdaptador.notifyDataSetChanged();
+                if (!e.getText().toString().equals("")) {
+                    cargarDatos(e.getText().toString());
+                } else {
+                    ListaLibros.libros.clear();
+                    ListaLibros.miAdaptador.notifyDataSetChanged();
+                }
+
             }
         });
 
@@ -65,14 +69,18 @@ public class BuscarFragment extends Fragment {
     }
 
     private void cargarDatos(String b) {
+        ListaLibros.libros.clear();
+        ListaLibros.miAdaptador.notifyDataSetChanged();
         db.collection("Libros")
-                .whereEqualTo("nombre", b)
+                .whereGreaterThanOrEqualTo("nombre", b)
+                .whereLessThanOrEqualTo("nombre", b + "\uf8ff")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()) {
+                                String idLibro = document.getId() + "";
                                 String nombre = document.getData().get("nombre") + "";
                                 String autor = document.getData().get("autor") + "";
                                 String empresa = document.getData().get("empresa") + "";
@@ -80,9 +88,9 @@ public class BuscarFragment extends Fragment {
                                 float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
                                 double precio =  Double.parseDouble(document.getData().get("precio") + "");
                                 int stock = Integer.parseInt(document.getData().get("stock") + "");
-                                int isbn = Integer.parseInt(document.getData().get("isbn") + "");
+                                long isbn = Long.parseLong(document.getData().get("isbn") + "");
 
-                                ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa, sinopsis, valoracion, stock));
+                                ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa, sinopsis, valoracion, stock, idLibro));
                                 ListaLibros.miAdaptador.notifyDataSetChanged();
 
                             }

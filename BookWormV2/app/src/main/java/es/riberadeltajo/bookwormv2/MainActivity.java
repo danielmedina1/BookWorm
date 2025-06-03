@@ -1,5 +1,7 @@
 package es.riberadeltajo.bookwormv2;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -39,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    public void cerrarSesion() {
+        SharedPreferences p = getSharedPreferences("Mi Sesion", MODE_PRIVATE);
+        SharedPreferences.Editor editor = p.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent i = new Intent(this, InicioSesion.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 
     @Override

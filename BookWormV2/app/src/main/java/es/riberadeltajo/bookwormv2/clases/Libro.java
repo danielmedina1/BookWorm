@@ -12,25 +12,24 @@ public class Libro implements Parcelable {
     private String autor;
     private String sinopsis;
     private float puntuacion;
-    private ArrayList<Review> reviews;
     private double precio;
-    private int isbn;
+    private long isbn;
     private int stock;
     private String empresa;
+    private String idLibro;
 
-    public Libro(String nombre, String autor, String sinopsis, float puntuacion, ArrayList<Review> reviews, double precio, int isbn, int stock, String empresa) {
+    public Libro(String nombre, String autor, String sinopsis, float puntuacion, double precio, long isbn, int stock, String empresa) {
         this.nombre = nombre;
         this.autor = autor;
         this.sinopsis = sinopsis;
         this.puntuacion = puntuacion;
-        this.reviews = reviews;
         this.precio = precio;
         this.isbn = isbn;
         this.stock = stock;
         this.empresa = empresa;
     }
 
-    public Libro(String nombre, String autor, double precio, int isbn, String empresa, String sinopsis, float valoracion, int stock) {
+    public Libro(String nombre, String autor, double precio, long isbn, String empresa, String sinopsis, float valoracion, int stock, String idLibro) {
         this.nombre = nombre;
         this.autor = autor;
         this.precio = precio;
@@ -39,6 +38,7 @@ public class Libro implements Parcelable {
         this.sinopsis = sinopsis;
         this.puntuacion = valoracion;
         this.stock = stock;
+        this.idLibro = idLibro;
     }
 
     public Libro() {
@@ -65,6 +65,14 @@ public class Libro implements Parcelable {
         }
     };
 
+    public String getIdLibro() {
+        return idLibro;
+    }
+
+    public void setIdLibro(String idLibro) {
+        this.idLibro = idLibro;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -89,14 +97,6 @@ public class Libro implements Parcelable {
         this.puntuacion = puntuacion;
     }
 
-    public ArrayList<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(ArrayList<Review> reviews) {
-        this.reviews = reviews;
-    }
-
     public double getPrecio() {
         return precio;
     }
@@ -105,11 +105,11 @@ public class Libro implements Parcelable {
         this.precio = precio;
     }
 
-    public int getIsbn() {
+    public long getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(int isbn) {
+    public void setIsbn(long isbn) {
         this.isbn = isbn;
     }
 
@@ -147,8 +147,7 @@ public class Libro implements Parcelable {
         dest.writeString(nombre);
         dest.writeString(sinopsis);
         dest.writeDouble(puntuacion);
-        dest.writeTypedList(reviews);
         dest.writeDouble(precio);
-        dest.writeInt(isbn);
+        dest.writeLong(isbn);
     }
 }

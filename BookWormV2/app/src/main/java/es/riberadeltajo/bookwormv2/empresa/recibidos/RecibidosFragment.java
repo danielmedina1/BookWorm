@@ -12,14 +12,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.clases.Pedido;
 import es.riberadeltajo.bookwormv2.databinding.FragmentRecibidosBinding;
+import es.riberadeltajo.bookwormv2.recyclerviews.carrito.ListaCarrito;
 import es.riberadeltajo.bookwormv2.recyclerviews.pedidos.ListaPedidos;
 
 public class RecibidosFragment extends Fragment {
@@ -35,21 +38,23 @@ public class RecibidosFragment extends Fragment {
         binding = FragmentRecibidosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        db.collection("Pedidos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(QueryDocumentSnapshot d : task.getResult()) {
-                    String email = d.get("email").toString();
-                    ArrayList libros = (ArrayList) d.get("libros");
-                    double precioTotal = Double.parseDouble(d.get("precioTotal") + "") ;
-                    ListaPedidos.pedidos.add(new Pedido(libros, precioTotal, email));
-                    ListaPedidos.miAdaptador.notifyDataSetChanged();
-                }
-
-            }
-        });
-
-
+        db.collection("Pedidos").whereEqualTo("estado",2)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                ArrayList librosPedidos = (ArrayList) document.get("libros");
+                                double precioTotal = Double.parseDouble("" + document.get("precioTotal")) ;
+                                Timestamp ts = (Timestamp) document.get("fecha");
+                                int estado = Integer.parseInt("" + document.get("estado"));
+                                String codUsuario = "" + document.get("codUsuario");
+                                ListaPedidos.pedidos.add(new Pedido(librosPedidos, precioTotal, ts.toDate(), estado, codUsuario, document.getId()));
+                                ListaPedidos.miAdaptador.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
         return root;
     }
 

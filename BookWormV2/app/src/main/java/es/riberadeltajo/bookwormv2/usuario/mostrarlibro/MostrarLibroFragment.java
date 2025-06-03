@@ -20,15 +20,17 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
-import es.riberadeltajo.bookwormv2.clases.Carrito;
+import es.riberadeltajo.bookwormv2.clases.Pedido;
 import es.riberadeltajo.bookwormv2.clases.Review;
 import es.riberadeltajo.bookwormv2.databinding.FragmentMostrarLibroBinding;
 import es.riberadeltajo.bookwormv2.recyclerviews.carrito.ListaCarrito;
@@ -40,6 +42,7 @@ import es.riberadeltajo.bookwormv2.usuario.reseñas.ResenasFragment;
 public class MostrarLibroFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    public static String idLibro = new String();
     public static String tituloLibro = new String();
     public static String isbnLibro = new String();
     public static String autorLibro = new String();
@@ -88,71 +91,44 @@ public class MostrarLibroFragment extends Fragment {
             pre.setText("Precio: " + precioLibro + "€");
         }
 
-        if (InicioSesion.hayPedido == false) {
-            if (ListaCarrito.librosCarrito.contains(tituloLibro)) {
-                bcarrito.setText("Quitar de pedidos");
-                int color = ContextCompat.getColor(requireContext(), R.color.black);
+
+            if (stockLibro >= 1) {
+                bcarrito.setText("Añadir a pedidos");
+                int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
                 bcarrito.setBackgroundColor(color);
             } else {
+                bcarrito.setText("Sin stock");
+                int color = ContextCompat.getColor(requireContext(), R.color.black);
+                bcarrito.setBackgroundColor(color);
+                bcarrito.setEnabled(false);
+            }
+
+
+        bcarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if (stockLibro >= 1) {
-                    bcarrito.setText("Añadir a pedidos");
-                    int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
-                    bcarrito.setBackgroundColor(color);
+                    db.collection("Usuarios").document(InicioSesion.codusuario).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot d = task.getResult();
+                            ArrayList librosPedidos = (ArrayList) d.get("carrito");
+                            if (!librosPedidos.contains(d.getId())) {
+                                librosPedidos.add(idLibro);
+                                db.collection("Usuarios").document(InicioSesion.codusuario)
+                                        .update("carrito", librosPedidos);
+                            }
+
+
+                        }
+                    });
                 } else {
                     bcarrito.setText("Sin stock");
                     int color = ContextCompat.getColor(requireContext(), R.color.black);
                     bcarrito.setBackgroundColor(color);
                     bcarrito.setEnabled(false);
                 }
-            }
-
-        } else {
-            bcarrito.setText("Pedido en curso");
-            int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
-            bcarrito.setBackgroundColor(color);
-            bcarrito.setEnabled(false);
-        }
-
-        bcarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (stockLibro >= 1) {
-                    if (!ListaCarrito.librosCarrito.contains(tituloLibro)) {
-                        bcarrito.setText("Quitar de pedidos");
-                        int color = ContextCompat.getColor(requireContext(), R.color.black);
-                        bcarrito.setBackgroundColor(color);;
-                        ListaCarrito.carrito.add(new Carrito(tituloLibro, precioLibro));
-                        ListaCarrito.librosCarrito.add(tituloLibro);
-                        stockLibro = stockLibro - 1;
-                        sto.setText("Hay " + stockLibro + " en stock");
-                        db.collection("Libros").document(tituloLibro).update("stock", stockLibro);
-
-                    } else {
-                        if (ListaCarrito.librosCarrito.contains(tituloLibro)) {
-                            bcarrito.setText("Añadir a pedidos");
-                            int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
-                            bcarrito.setBackgroundColor(color);
-                            ListaCarrito.carrito.remove(new Carrito(tituloLibro, precioLibro));
-                            ListaCarrito.librosCarrito.remove(tituloLibro);
-                            stockLibro = stockLibro + 1;
-                            sto.setText("Hay " + stockLibro + " en stock");
-                            db.collection("Libros").document(tituloLibro).update("stock", stockLibro);
-                        }
-                    }
-
-
-
-                } else {
-                    bcarrito.setText("Sin stock");
-                    int color = ContextCompat.getColor(requireContext(), R.color.teal_700);
-                    bcarrito.setBackgroundColor(color);
-                    bcarrito.setEnabled(false);
-                }
-
-
-
-
-
             }
         });
 
@@ -219,7 +195,6 @@ public class MostrarLibroFragment extends Fragment {
                                 }
                                 p = p/r;
                             }
-
                             Log.d("P FINAL", ""+p);
                         }
 

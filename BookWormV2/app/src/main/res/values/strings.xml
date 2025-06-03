@@ -15,11 +15,13 @@
     <string name="menu_resenasLibro">Dejar Reseña</string>+
     <string name="menu_usuarios">Usuarios</string>
     <string name="menu_cambio">Cambio de Información</string>
+    <string name="productos_carrito">Productos del Pedido</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main2">MainActivity2</string>
 
     <string name="menu_recibidos">Pedidos Recibidos</string>
     <string name="menu_gestion">Gestionar Libros</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_cerrar_sesion">Cerrar Sesion</string>
+    <string name="menu_editar">Datos Libro</string>
 </resources>

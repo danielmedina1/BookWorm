@@ -27,9 +27,10 @@ public class InicioSesion extends AppCompatActivity {
     private FirebaseAuth mAuth;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String nombreusuario = new String();
+    public static String nombreempresa = new String();
     public static String emailusuario = new String();
     public static String emailempresa = new String();
-    public static  boolean hayPedido = false;
+    public static String codusuario = new String();
 
 
     @Override
@@ -58,7 +59,7 @@ public class InicioSesion extends AppCompatActivity {
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             nombreusuario = d.getString("username");
                             emailusuario = d.getString("email");
-                            hayPedido = d.getBoolean("ped");
+                            codusuario = d.getId();
                             startActivity(i);
                         } else {
                             db.collection("Empresas").document(email.getText().toString()).get()
@@ -69,6 +70,7 @@ public class InicioSesion extends AppCompatActivity {
                                             if (pass.getText().toString().equals(d.getString("password"))) {
                                                 Intent i = new Intent(getApplicationContext(), MainActivity2.class);
                                                 emailempresa = d.getString("email");
+                                                nombreempresa = d.getString("nombre");
                                                 startActivity(i);
                                             } else {
                                                 Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();

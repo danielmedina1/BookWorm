@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import es.riberadeltajo.bookwormv2.InicioSesion;
+import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Libro;
 import es.riberadeltajo.bookwormv2.databinding.FragmentGestionBinding;
 import es.riberadeltajo.bookwormv2.recyclerviews.gestion_libros.ListaGestion;
@@ -34,6 +38,7 @@ public class GestionFragment extends Fragment {
 
         binding = FragmentGestionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        Button bAñadir = root.findViewById(R.id.botonAñadirLibro);
         db.collection("Libros").whereEqualTo("empresa", InicioSesion.emailempresa)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -44,17 +49,24 @@ public class GestionFragment extends Fragment {
                             String autor = d.getData().get("autor") + "";
                             String sinopsis = d.getData().get("sinopsis") + "";
                             float puntuacion = Float.parseFloat(d.getData().get("puntuacion") + "");
-                            ArrayList reviews = (ArrayList) d.getData().get("reviews");
                             double precio = Double.parseDouble(d.getData().get("precio") + "");
-                            int isbn = Integer.parseInt(d.getData().get("isbn") + "");
+                            long isbn = Long.parseLong(d.getData().get("isbn") + "");
                             int stock = Integer.parseInt(d.getData().get("stock") + "");
                             String empresa = d.getData().get("empresa") + "";
-                            Libro l = new Libro(nombre, autor, sinopsis, puntuacion, reviews, precio, isbn, stock, empresa);
+                            Libro l = new Libro(nombre, autor, sinopsis, puntuacion, precio, isbn, stock, empresa);
                             ListaGestion.listaGestion.add(l);
                             ListaGestion.miAdaptador.notifyDataSetChanged();
                         }
                     }
                 });
+
+        bAñadir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController nc = Navigation.findNavController(v);
+                nc.navigate(R.id.action_nav_gestion_to_nav_editar);
+            }
+        });
 
 
 

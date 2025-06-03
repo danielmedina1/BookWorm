@@ -1,9 +1,12 @@
 package es.riberadeltajo.bookwormv2.recyclerviews.carrito;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,28 +19,32 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import es.riberadeltajo.bookwormv2.clases.Carrito;
+import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Pedido;
 import es.riberadeltajo.bookwormv2.databinding.FragmentCarritoBinding;
+import es.riberadeltajo.bookwormv2.recyclerviews.productos.ListaProductos;
+import es.riberadeltajo.bookwormv2.recyclerviews.productos.MyProductosRecyclerViewAdapter;
+import es.riberadeltajo.bookwormv2.usuario.productoscarrito.ProductosCarritoFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 
 public class MyCarritoRecyclerViewAdapter extends RecyclerView.Adapter<MyCarritoRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Carrito> mValues;
+    private final List<Pedido> mValues;
     private Context context;
+    private int pos = 0;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public MyCarritoRecyclerViewAdapter(List<Carrito> items, Context c) {
+    public MyCarritoRecyclerViewAdapter(List<Pedido> items, Context c) {
         mValues = items;
         context = c;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new ViewHolder(FragmentCarritoBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 
     }
@@ -45,36 +52,43 @@ public class MyCarritoRecyclerViewAdapter extends RecyclerView.Adapter<MyCarrito
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Log.d("Tamaño Array", "" + ListaCarrito.carrito.size());
-        String titulo = mValues.get(position).getLibro() + "";
-        double precio = mValues.get(position).getPrecio();
+        Date fecha = mValues.get(position).getFecha();
+        SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+        String fechaF = f.format(fecha);
+        pos = position;
 
-        holder.mTituloLibro.setText(titulo);
-        holder.mPrecioLibro.setText(precio+"");
+        holder.mFechaPedido.setText(fechaF);
 
-        holder.mBotonQuitar.setOnClickListener(new View.OnClickListener() {
+        if (mValues.get(position).getEstado() == 1) {
+            holder.mEstadoPedido.setText("En Carrito");
+            holder.mNombrePedido.setText("Carrito");
+        } else {
+            pos++;
+            if (mValues.get(position).getEstado() == 2) {
+                holder.mEstadoPedido.setText("En espera");
+                holder.mNombrePedido.setText("Pedido-" + pos);
+            } else {
+                if (mValues.get(position).getEstado() == 3) {
+                    holder.mEstadoPedido.setText("Recibido");
+                    holder.mNombrePedido.setText("Pedido-" + pos);
+                }
+            }
+
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    ListaCarrito.carrito.remove(pos);
-                    ListaCarrito.librosCarrito.remove(pos);
-                    notifyItemRemoved(pos);
-                    ListaCarrito.miAdaptador.notifyDataSetChanged();
+                ListaProductos.listaLibros.clear();
+                ProductosCarritoFragment.est = mValues.get(position).getEstado();
+                NavController nc = Navigation.findNavController(v);
+                ProductosCarritoFragment.ll = mValues.get(position).getLibros();
+                MyProductosRecyclerViewAdapter.estado = mValues.get(position).getEstado();
+                nc.navigate(R.id.action_nav_pedidos_to_nav_productos_carrito);
 
-
-                    db.collection("Libros").document(titulo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            DocumentSnapshot ds = task.getResult();
-                            int stock = Integer.parseInt(ds.get("stock") + "") + 1;
-                            db.collection("Libros").document(titulo).update("stock", stock);
-                        }
-                    });
-
-                }
 
             }
         });
+
 
     }
 
@@ -84,15 +98,15 @@ public class MyCarritoRecyclerViewAdapter extends RecyclerView.Adapter<MyCarrito
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mTituloLibro;
-        public final TextView mPrecioLibro;
-        public final ImageButton mBotonQuitar;
+        public final TextView mNombrePedido;
+        public final TextView mEstadoPedido;
+        public final TextView mFechaPedido;
 
         public ViewHolder(FragmentCarritoBinding binding) {
             super(binding.getRoot());
-            mTituloLibro = binding.libroCarrito;
-            mPrecioLibro = binding.precioCarrito;
-            mBotonQuitar = binding.quitarCarrito;
+            mNombrePedido = binding.nombrePedido;
+            mEstadoPedido = binding.estadoPedido;
+            mFechaPedido = binding.fechaPedido;
         }
 
         @Override

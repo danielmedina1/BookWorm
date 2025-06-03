@@ -1,9 +1,12 @@
 package es.riberadeltajo.bookwormv2.recyclerviews.gestion_libros;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Libro;
 import es.riberadeltajo.bookwormv2.databinding.FragmentGestionLibrosBinding;
 
@@ -66,17 +70,23 @@ public class MyGestionLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyG
                                     }
                                 }
                             });
-
                     db.collection("Libros").document(titulo).delete();
                 }
-
 
             }
         });
         holder.mBotonEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                NavController nc = Navigation.findNavController(v);
+                Bundle b = new Bundle();
+                b.putString("titulo", mValues.get(position).getNombre().toString());
+                b.putString("autor", mValues.get(position).getAutor().toString());
+                b.putLong("isbn", mValues.get(position).getIsbn());
+                b.putDouble("precio", mValues.get(position).getPrecio());
+                b.putInt("stock", mValues.get(position).getStock());
+                b.putString("sinopsis", mValues.get(position).getSinopsis().toString());
+                nc.navigate(R.id.action_nav_gestion_to_nav_editar, b);
             }
         });
     }
