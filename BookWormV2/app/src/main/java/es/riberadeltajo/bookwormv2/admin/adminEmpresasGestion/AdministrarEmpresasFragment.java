@@ -59,29 +59,34 @@ public class AdministrarEmpresasFragment extends Fragment {
         bAccionEmp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                empresa.put("nombre", empNombre.getText().toString());
-                empresa.put("email", empEmail.getText().toString());
-                empresa.put("password", empContraseña.getText().toString());
-                empresa.put("localizacion", empLocal.getText().toString());
-                if(b != null) {
-                    db.collection("Empresas").document(b.getString("idEmpresa")).update(empresa)
-                            .addOnSuccessListener(new OnSuccessListener() {
-                                @Override
-                                public void onSuccess(Object o) {
-                                    Toast.makeText(getActivity(), "Empresa actualizada con exito", Toast.LENGTH_SHORT).show();
-                                    getFragmentManager().popBackStack();
-                                }
-                            });
-                } else {
-                    db.collection("Empresas").document().set(empresa)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(getActivity(), "Empresa añadida con exito", Toast.LENGTH_SHORT).show();
-                                    getFragmentManager().popBackStack();
-                                }
-                            });
+                if (!empNombre.getText().toString().equals("") && !empEmail.getText().toString().equals("")
+                        && !empContraseña.getText().toString().equals("") && !empLocal.getText().toString().equals("")) {
+                    empresa.put("nombre", empNombre.getText().toString());
+                    empresa.put("email", empEmail.getText().toString());
+                    empresa.put("password", empContraseña.getText().toString());
+                    empresa.put("localizacion", empLocal.getText().toString());
+                    if(b != null) {
+                        db.collection("Empresas").document(b.getString("idEmpresa")).update(empresa)
+                                .addOnSuccessListener(new OnSuccessListener() {
+                                    @Override
+                                    public void onSuccess(Object o) {
+                                        Toast.makeText(getActivity(), "Empresa actualizada con exito", Toast.LENGTH_SHORT).show();
+                                        getFragmentManager().popBackStack();
+                                    }
+                                });
+                    } else {
+                        db.collection("Empresas").document().set(empresa)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getActivity(), "Empresa añadida con exito", Toast.LENGTH_SHORT).show();
+                                        getFragmentManager().popBackStack();
+                                    }
+                                });
+                    }
                 }
+
+
 
             }
         });

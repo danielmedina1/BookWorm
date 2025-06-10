@@ -71,24 +71,27 @@ public class EditarFragment extends Fragment {
         bAccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                libro.put("autor", autor.getText().toString());
-                libro.put("empresa", InicioSesion.codempresa);
-                libro.put("isbn", Long.parseLong(isbn.getText() + ""));
-                libro.put("nombre", titulo.getText().toString());
-                libro.put("precio", Double.parseDouble(precio.getText() + ""));
-                libro.put("puntuacion", 0);
-                libro.put("sinopsis", sinopsis.getText().toString());
-                libro.put("stock", Integer.parseInt(stock.getText() + ""));
-                if(b != null) {
-                    db.collection("Libros").document(id).update(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(getActivity(), "Libro actualizado con exito", Toast.LENGTH_SHORT).show();
-                            getFragmentManager().popBackStack();
-                        }
-                    });
-                } else {
-                    if (!titulo.getText().equals("")) {
+                if (!titulo.getText().toString().equals("") && !autor.getText().toString().equals("")
+                        && !isbn.getText().toString().equals("") && !precio.getText().toString().equals("")
+                        && !stock.getText().toString().equals("") && !sinopsis.getText().toString().equals("")) {
+                    libro.put("autor", autor.getText().toString());
+                    libro.put("empresa", InicioSesion.codempresa);
+                    libro.put("isbn", Long.parseLong(isbn.getText() + ""));
+                    libro.put("nombre", titulo.getText().toString());
+                    libro.put("precio", Double.parseDouble(precio.getText() + ""));
+                    libro.put("puntuacion", 0);
+                    libro.put("sinopsis", sinopsis.getText().toString());
+                    libro.put("stock", Integer.parseInt(stock.getText() + ""));
+                    if (b != null) {
+                        db.collection("Libros").document(id).update(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getActivity(), "Libro actualizado con exito", Toast.LENGTH_SHORT).show();
+                                getFragmentManager().popBackStack();
+                            }
+                        });
+                    } else {
+
                         db.collection("Libros").document(titulo.getText().toString()).set(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
@@ -96,11 +99,12 @@ public class EditarFragment extends Fragment {
                                 getFragmentManager().popBackStack();
                             }
                         });
+
                     }
 
+                } else {
+
                 }
-
-
 
 
             }

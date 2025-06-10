@@ -67,6 +67,7 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
         }
 
         holder.mCantidadProducto.setText(cant + "");
+        holder.mCantidadProducto.setVisibility(View.INVISIBLE);
 
         if (estado != 1) {
             holder.mBotonEliminar.setVisibility(View.INVISIBLE);
@@ -85,6 +86,8 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
                 }
                 db.collection("Usuarios").document(InicioSesion.codusuario)
                         .update("carrito", productos);
+                //db.collection("Libros").document(mValues.get(position).getIdLibro()).update("stock", Integer.parseInt( mValues.get(position).getStock()+ "")  + 1);
+
             }
         });
 
