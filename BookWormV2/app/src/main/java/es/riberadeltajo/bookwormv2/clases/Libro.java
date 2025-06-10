@@ -18,7 +18,7 @@ public class Libro implements Parcelable {
     private String empresa;
     private String idLibro;
 
-    public Libro(String nombre, String autor, String sinopsis, float puntuacion, double precio, long isbn, int stock, String empresa) {
+    public Libro(String nombre, String autor, String sinopsis, float puntuacion, double precio, long isbn, int stock, String empresa, String idLibro) {
         this.nombre = nombre;
         this.autor = autor;
         this.sinopsis = sinopsis;
@@ -27,6 +27,7 @@ public class Libro implements Parcelable {
         this.isbn = isbn;
         this.stock = stock;
         this.empresa = empresa;
+        this.idLibro = idLibro;
     }
 
     public Libro(String nombre, String autor, double precio, long isbn, String empresa, String sinopsis, float valoracion, int stock, String idLibro) {

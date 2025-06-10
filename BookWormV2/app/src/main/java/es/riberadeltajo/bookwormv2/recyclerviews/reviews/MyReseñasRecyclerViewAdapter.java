@@ -51,10 +51,19 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
     public void onBindViewHolder(final ViewHolder holder, int position) {
         String userName = mValues.get(position).getUsuario() + "";
         String mail = mValues.get(position).getCodUser() + "";
-        String titLibro= mValues.get(position).getLibro() + "";
+        db.collection("Libros").document(mValues.get(position).getLibro()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot d = task.getResult();
+                String titLibro= d.get("nombre")  + "";
+                holder.libro.setText(titLibro);
+
+            }
+        });
+
+
         holder.mItem = mValues.get(position);
         holder.usuario.setText(mValues.get(position).getUsuario());
-        holder.libro.setText(mValues.get(position).getLibro());
         holder.contenido.setText(mValues.get(position).getDesc());
         holder.ratingBar.setRating(mValues.get(position).getPuntuacion());
         holder.ratingBar.setIsIndicator(true);
@@ -64,7 +73,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
             public void onClick(View v) {
                 if (userName.equals(InicioSesion.nombreusuario)) {
                     if (ruta == R.id.action_nav_perfil_to_nav_mostrarLibro) {
-                        db.collection("Libros").document(titLibro).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        db.collection("Libros").document(mValues.get(position).getLibro()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot d = task.getResult();
@@ -72,7 +81,13 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
                                 MostrarLibroFragment.tituloLibro = d.getString("nombre");
                                 MostrarLibroFragment.isbnLibro = d.get("isbn") + "";
                                 MostrarLibroFragment.autorLibro = d.getString("autor");
-                                MostrarLibroFragment.empresaLibro = d.getString("empresa");
+                                db.collection("Empresas").document("" + d.getString("empresa")).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot d2 = task.getResult();
+                                        MostrarLibroFragment.empresaLibro = d2.getString("nombre");
+                                    }
+                                });
                                 MostrarLibroFragment.sinopsisLibro = d.getString("sinopsis");
                                 MostrarLibroFragment.stockLibro = Integer.parseInt(d.get("stock") + "");
                                 MostrarLibroFragment.valoracionLibro = Float.parseFloat(d.get("puntuacion") + "");
@@ -84,7 +99,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
 
                 } else {
                     if (ruta == R.id.action_nav_perfil_to_nav_mostrarLibro) {
-                        db.collection("Libros").document(titLibro).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        db.collection("Libros").document(mValues.get(position).getLibro()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot d = task.getResult();
@@ -92,7 +107,14 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
                                 MostrarLibroFragment.tituloLibro = d.getString("nombre");
                                 MostrarLibroFragment.isbnLibro = d.get("isbn") + "";
                                 MostrarLibroFragment.autorLibro = d.getString("autor");
-                                MostrarLibroFragment.empresaLibro = d.getString("empresa");
+                                db.collection("Empresas").document("" + d.getString("empresa")).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot d2 = task.getResult();
+                                        MostrarLibroFragment.empresaLibro = d2.getString("nombre");
+                                    }
+                                });
+
                                 MostrarLibroFragment.sinopsisLibro = d.getString("sinopsis");
                                 MostrarLibroFragment.stockLibro = Integer.parseInt(d.get("stock") + "");
                                 MostrarLibroFragment.valoracionLibro = Float.parseFloat(d.get("puntuacion") + "");
@@ -107,6 +129,7 @@ public class MyReseñasRecyclerViewAdapter extends RecyclerView.Adapter<MyReseñ
                         Bundle b = new Bundle();
                         b.putString("username", userName);
                         b.putString("email", mail);
+                        b.putString("coduser", mValues.get(position).getCodUser() + "");
                         nc.navigate(ruta, b);
                     }
 

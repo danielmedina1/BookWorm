@@ -43,6 +43,7 @@ public class RecibidosFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ListaPedidos.pedidos.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 ArrayList librosPedidos = (ArrayList) document.get("libros");
                                 double precioTotal = Double.parseDouble("" + document.get("precioTotal")) ;

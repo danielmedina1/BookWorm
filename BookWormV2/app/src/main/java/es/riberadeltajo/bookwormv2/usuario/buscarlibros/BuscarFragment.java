@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -50,17 +51,17 @@ public class BuscarFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (!e.getText().toString().equals("")) {
                     cargarDatos(e.getText().toString());
                 } else {
                     ListaLibros.libros.clear();
                     ListaLibros.miAdaptador.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
 
             }
         });
@@ -80,27 +81,32 @@ public class BuscarFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()) {
-                                String idLibro = document.getId() + "";
-                                String nombre = document.getData().get("nombre") + "";
-                                String autor = document.getData().get("autor") + "";
-                                String empresa = document.getData().get("empresa") + "";
-                                String sinopsis = document.getData().get("sinopsis") + "";
-                                float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
-                                double precio =  Double.parseDouble(document.getData().get("precio") + "");
-                                int stock = Integer.parseInt(document.getData().get("stock") + "");
-                                long isbn = Long.parseLong(document.getData().get("isbn") + "");
+                                db.collection("Empresas").document(document.get("empresa") + "")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        DocumentSnapshot d = task.getResult();
+                                        String idLibro = document.getId() + "";
+                                        String nombre = document.getData().get("nombre") + "";
+                                        String autor = document.getData().get("autor") + "";
+                                        String empresa = d.get("nombre") + "";
+                                        String sinopsis = document.getData().get("sinopsis") + "";
+                                        float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
+                                        double precio =  Double.parseDouble(document.getData().get("precio") + "");
+                                        int stock = Integer.parseInt(document.getData().get("stock") + "");
+                                        long isbn = Long.parseLong(document.getData().get("isbn") + "");
 
-                                ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa, sinopsis, valoracion, stock, idLibro));
-                                ListaLibros.miAdaptador.notifyDataSetChanged();
-
+                                        ListaLibros.libros.add(new Libro(nombre, autor, precio, isbn, empresa, sinopsis, valoracion, stock, idLibro));
+                                        ListaLibros.miAdaptador.notifyDataSetChanged();
+                                    }
+                                });
                             }
                         } else {
                             Log.d("ERROR", "---Error al conseguir los datos---");
                         }
-
                     }
                 });
-
     }
 
     @Override

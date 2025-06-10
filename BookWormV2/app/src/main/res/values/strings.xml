@@ -24,4 +24,10 @@
     <string name="menu_gestion">Gestionar Libros</string>
     <string name="menu_cerrar_sesion">Cerrar Sesion</string>
     <string name="menu_editar">Datos Libro</string>
+    <string name="title_activity_main3">MainActivity3</string>
+
+    <string name="menu_admin_empresas">Administrar Empresas</string>
+    <string name="menu_administrar_empresas">Empresas</string>
+    <string name="menu_admin_usuarios">Administrar Usuarios</string>
+    <string name="menu_admin_cerrar">Cerrar Sesion</string>
 </resources>

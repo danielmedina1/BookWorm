@@ -79,6 +79,7 @@ public class MyCarritoRecyclerViewAdapter extends RecyclerView.Adapter<MyCarrito
             @Override
             public void onClick(View v) {
                 ListaProductos.listaLibros.clear();
+                ListaProductos.listaProductos.clear();
                 ProductosCarritoFragment.est = mValues.get(position).getEstado();
                 NavController nc = Navigation.findNavController(v);
                 ProductosCarritoFragment.ll = mValues.get(position).getLibros();

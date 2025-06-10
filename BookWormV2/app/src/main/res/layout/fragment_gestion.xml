@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/jet"
     tools:context=".empresa.gestion.GestionFragment">
 
     <Button
@@ -20,8 +21,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView7"
         android:name="es.riberadeltajo.bookwormv2.recyclerviews.gestion_libros.GestionLibrosFragment"
-        android:layout_width="409dp"
-        android:layout_height="627dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/botonAñadirLibro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

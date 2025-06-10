@@ -60,7 +60,7 @@ public class ProductosFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ListaProductos.miAdaptador = new MyProductosRecyclerViewAdapter(ListaProductos.listaLibros);
+            ListaProductos.miAdaptador = new MyProductosRecyclerViewAdapter(ListaProductos.listaProductos);
             recyclerView.setAdapter(ListaProductos.miAdaptador);
         }
         return view;

@@ -64,7 +64,7 @@ public class PerfilFragment extends Fragment {
 
         cargarReseñas();
 
-        db.collection("Usuarios").document(InicioSesion.emailusuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Usuarios").document(InicioSesion.codusuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot ds = task.getResult();
@@ -72,8 +72,19 @@ public class PerfilFragment extends Fragment {
                 ArrayList sig = (ArrayList) ds.get("siguiendo");
                 String nom = ds.getString("username") + "";
                 tituloPerfil.setText(nom);
-                seguidoresPerfil.setText(seg.size() + "");
-                siguiendoPerfil.setText(sig.size() + "");
+                if (seg != null) {
+                    seguidoresPerfil.setText(seg.size() + "");
+                } else {
+                    seguidoresPerfil.setText("0");
+                }
+
+                if (sig != null) {
+                    siguiendoPerfil.setText(sig.size() + "");
+                } else {
+                    siguiendoPerfil.setText("0");
+                }
+
+
 
 
 
@@ -104,7 +115,7 @@ public class PerfilFragment extends Fragment {
 
     private void cargarReseñas() {
         db.collection("Reviews")
-                .whereEqualTo("emailusuario", InicioSesion.emailusuario)
+                .whereEqualTo("codusuario", InicioSesion.codusuario)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

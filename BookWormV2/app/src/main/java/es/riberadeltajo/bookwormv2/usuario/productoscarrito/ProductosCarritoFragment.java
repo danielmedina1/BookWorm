@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +64,14 @@ public class ProductosCarritoFragment extends Fragment {
                     float punt = Float.parseFloat(d.get("puntuacion") + "") ;
                     int stock = Integer.parseInt(d.get("stock") + "");
                     String idLibro = d.getId() + "";
-                    ListaProductos.listaLibros.add(new Libro(nom, aut, pre, isbn, emp, sin, punt, stock, idLibro));
-                    pT = pT + pre;
+                    Libro libro = new Libro(nom, aut, pre, isbn, emp, sin, punt, stock, idLibro);
+                    if (!ListaProductos.listaProductos.contains(libro)) {
+                        ListaProductos.listaProductos.add(libro);
+                        ListaProductos.miAdaptador.notifyDataSetChanged();
+                    }
+                    ListaProductos.listaLibros.add(libro);
                     ListaProductos.miAdaptador.notifyDataSetChanged();
+                    pT = pT + pre;
                 }
             });
         }

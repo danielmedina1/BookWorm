@@ -56,7 +56,7 @@ public class CambioInfoFragment extends Fragment {
         EditText edUsername = root.findViewById(R.id.editUsername);
         EditText edContraseña = root.findViewById(R.id.editContrasena);
         Button gCambios = root.findViewById(R.id.botonCambiar);
-        db.collection("Usuarios").document(InicioSesion.emailusuario)
+        db.collection("Usuarios").document(InicioSesion.codusuario)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -76,11 +76,11 @@ public class CambioInfoFragment extends Fragment {
                     Toast.makeText(getContext(), "Uno de los campos está vacío", Toast.LENGTH_SHORT).show();
                 } else {
                     InicioSesion.nombreusuario = edNombre.getText().toString();
-                    db.collection("Usuarios").document(InicioSesion.emailusuario)
+                    db.collection("Usuarios").document(InicioSesion.codusuario)
                             .update("nombre", edNombre.getText().toString(), "apellidos", edApellidos.getText().toString(),
                                     "username", edUsername.getText().toString(), "contraseña", edContraseña.getText().toString());
 
-                    db.collection("Reviews").whereEqualTo("emailusuario", InicioSesion.emailusuario)
+                    db.collection("Reviews").whereEqualTo("codusuario", InicioSesion.codusuario)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {

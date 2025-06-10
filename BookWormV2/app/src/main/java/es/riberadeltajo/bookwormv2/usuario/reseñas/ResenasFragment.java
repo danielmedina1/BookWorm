@@ -21,10 +21,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import es.riberadeltajo.bookwormv2.InicioSesion;
 import es.riberadeltajo.bookwormv2.R;
@@ -37,7 +39,9 @@ public class ResenasFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static String tituloLibro = new String();
+    public static String idLibro = new String();
 
+    public static String codreseña = new String();
 
     public static String usuario = new String();
     private static ArrayList res = new ArrayList();
@@ -63,22 +67,14 @@ public class ResenasFragment extends Fragment {
 
                 resena.put("descripcion", textR.getText().toString());
                 resena.put("fecha", cal.getTime());
-                resena.put("libro", tituloLibro);
+                resena.put("libro", idLibro);
                 resena.put("puntuacion", puntR.getRating());
                 resena.put("usuario", usuario);
-                resena.put("emailusuario", InicioSesion.emailusuario);
-                db.collection("Reviews").document("res" + tituloLibro + usuario).set(resena)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("", "Hecho");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("No Hecho", "Hecho");
-                            }
-                        });
+                resena.put("codusuario", InicioSesion.codusuario);
+                codreseña = InicioSesion.codusuario + "-"+tituloLibro;
+                db.collection("Reviews").document(codreseña).set(resena);
+
+
                 getFragmentManager().popBackStack();
             }
         });

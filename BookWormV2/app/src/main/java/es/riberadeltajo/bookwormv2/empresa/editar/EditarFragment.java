@@ -56,7 +56,7 @@ public class EditarFragment extends Fragment {
 
         Bundle b = getArguments();
         if(b != null) {
-            id = db.collection("Libros").document("" + b.get("titulo")).getId();
+            id = b.get("idLibro") + "";
             uso.setText("Editar Libro");
             bAccion.setText("Guardar Cambios");
             titulo.setText(b.get("titulo") + "");
@@ -72,7 +72,7 @@ public class EditarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 libro.put("autor", autor.getText().toString());
-                libro.put("empresa", InicioSesion.emailempresa);
+                libro.put("empresa", InicioSesion.codempresa);
                 libro.put("isbn", Long.parseLong(isbn.getText() + ""));
                 libro.put("nombre", titulo.getText().toString());
                 libro.put("precio", Double.parseDouble(precio.getText() + ""));
@@ -80,7 +80,7 @@ public class EditarFragment extends Fragment {
                 libro.put("sinopsis", sinopsis.getText().toString());
                 libro.put("stock", Integer.parseInt(stock.getText() + ""));
                 if(b != null) {
-                    db.collection("Libros").document(titulo.getText().toString()).update(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    db.collection("Libros").document(id).update(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getActivity(), "Libro actualizado con exito", Toast.LENGTH_SHORT).show();
@@ -88,13 +88,16 @@ public class EditarFragment extends Fragment {
                         }
                     });
                 } else {
-                    db.collection("Libros").document(titulo.getText().toString()).set(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(getActivity(), "Libro añadido con exito", Toast.LENGTH_SHORT).show();
-                            getFragmentManager().popBackStack();
-                        }
-                    });
+                    if (!titulo.getText().equals("")) {
+                        db.collection("Libros").document(titulo.getText().toString()).set(libro).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getActivity(), "Libro añadido con exito", Toast.LENGTH_SHORT).show();
+                                getFragmentManager().popBackStack();
+                            }
+                        });
+                    }
+
                 }
 
 

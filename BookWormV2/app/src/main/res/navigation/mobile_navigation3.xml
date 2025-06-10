@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation3"
+    app:startDestination="@+id/nav_admin_empresas">
+
+    <fragment
+        android:id="@+id/nav_admin_empresas"
+        android:name="es.riberadeltajo.bookwormv2.admin.adminEmpresas.AdminEmpresasFragment"
+        android:label="@string/menu_admin_empresas"
+        tools:layout="@layout/fragment_admin_empresas" >
+        <action
+            android:id="@+id/action_nav_admin_empresas_to_nav_administrar_empresas"
+            app:destination="@id/nav_administrar_empresas" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_administrar_empresas"
+        android:name="es.riberadeltajo.bookwormv2.admin.adminEmpresasGestion.AdministrarEmpresasFragment"
+        android:label="@string/menu_administrar_empresas"
+        tools:layout="@layout/fragment_administrar_empresas" />
+
+
+
+    <fragment
+        android:id="@+id/nav_admin_cerrar"
+        android:name="es.riberadeltajo.bookwormv2.admin.adminCerrar.AdminCerrarFragment"
+        android:label="@string/menu_cerrar_sesion"
+        tools:layout="@layout/fragment_admin_cerrar" />
+</navigation>

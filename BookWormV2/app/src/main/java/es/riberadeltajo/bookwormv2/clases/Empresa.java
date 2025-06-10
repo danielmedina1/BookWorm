@@ -3,9 +3,11 @@ package es.riberadeltajo.bookwormv2.clases;
 import java.util.ArrayList;
 
 public class Empresa {
+    private String idEmpresa;
     private String nombre;
+    private String email;
     private String password;
-    private int codEmpresa;
+    private String localizacion;
 
     public String getNombre() {
         return nombre;
@@ -23,18 +25,36 @@ public class Empresa {
         this.password = password;
     }
 
-    public int getCodEmpresa() {
-        return codEmpresa;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCodEmpresa(int codEmpresa) {
-        this.codEmpresa = codEmpresa;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Empresa(String nombre, String password, int codEmpresa, ArrayList<Libro> libros) {
+    public String getLocalizacion() {
+        return localizacion;
+    }
+
+    public void setLocalizacion(String localizacion) {
+        this.localizacion = localizacion;
+    }
+
+    public String getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(String idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public Empresa(String idEmpresa, String nombre, String password,String email ,String localizacion) {
+        this.idEmpresa = idEmpresa;
         this.nombre = nombre;
+        this.email = email;
         this.password = password;
-        this.codEmpresa = codEmpresa;
+        this.localizacion = localizacion;
     }
 
     public Empresa() {

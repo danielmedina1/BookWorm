@@ -41,7 +41,7 @@ public class InicioFragment extends Fragment {
         binding = FragmentInicioBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         MyReseñasRecyclerViewAdapter.ruta = R.id.action_nav_inicio_to_nav_usuarios;
-        db.collection("Usuarios").document(InicioSesion.emailusuario)
+        db.collection("Usuarios").document(InicioSesion.codusuario)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -50,32 +50,33 @@ public class InicioFragment extends Fragment {
                 ListaReseñas.reseñas.clear();
                 ListaReseñas.miAdaptador.notifyDataSetChanged();
                 siguiendo = (ArrayList) task.getResult().get("siguiendo");
-                for (int i = 0; i < siguiendo.size(); i++) {
-                    db.collection("Reviews")
-                            .whereEqualTo("emailusuario", siguiendo.get(i))
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()){
-                                        for(QueryDocumentSnapshot document : task.getResult()) {
-                                            String descripcion = document.getData().get("descripcion") + "";
-                                            Timestamp ts = (Timestamp) document.getData().get("fecha");
-                                            Date fecha = ts.toDate();
-                                            String libro = document.getData().get("libro") + "";
-                                            String usuario = document.getData().get("usuario") + "";
-                                            String mail = document.getData().get("emailusuario") + "";
-                                            float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
-                                            ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario, mail));
-                                            ListaReseñas.miAdaptador.notifyDataSetChanged();
+                if (siguiendo != null &&  siguiendo.size() != 0) {
+                    for (int i = 0; i < siguiendo.size(); i++) {
+                        db.collection("Reviews")
+                                .whereEqualTo("codusuario", siguiendo.get(i))
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            for(QueryDocumentSnapshot document : task.getResult()) {
+                                                String descripcion = document.getData().get("descripcion") + "";
+                                                Timestamp ts = (Timestamp) document.getData().get("fecha");
+                                                Date fecha = ts.toDate();
+                                                String libro = document.getData().get("libro") + "";
+                                                String usuario = document.getData().get("usuario") + "";
+                                                String codus = document.getData().get("codusuario") + "";
+                                                float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
+                                                ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario, codus));
+                                                ListaReseñas.miAdaptador.notifyDataSetChanged();
+                                            }
+                                        } else {
+                                            Log.d("ERROR", "---Error al conseguir los datos---");
                                         }
-                                    } else {
-                                        Log.d("ERROR", "---Error al conseguir los datos---");
                                     }
-                                }
-                            });
+                                });
+                    }
                 }
-
 
             }
         });

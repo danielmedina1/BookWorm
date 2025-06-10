@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,95 +48,109 @@ public class UsuariosFragment extends Fragment {
         mailPropio = InicioSesion.emailusuario;
         mailUsuario = b.getString("email");
         nomUsuario = b.getString("username");
+        String codAjeno = b.getString("coduser");
+        Log.d("CODAJENO","" + codAjeno);
 
         Button bAccion = root.findViewById(R.id.accionUsuario);
 
         TextView username = root.findViewById(R.id.usernameUsuario);
         username.setText(nomUsuario + "");
 
-        db.collection("Usuarios").document(mailPropio).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        db.collection("Usuarios").document(InicioSesion.codusuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                ArrayList sig = (ArrayList) document.getData().get("siguiendo");
-                if (sig.contains(mailUsuario)) {
+                ArrayList sig = (ArrayList) document.get("siguiendo");
+                if (sig.contains(codAjeno)) {
                     bAccion.setText("Siguiendo");
                     int color = ContextCompat.getColor(requireContext(), R.color.black);
                     bAccion.setBackgroundColor(color);
                     siguiendo = true;
                 } else {
                     bAccion.setText("Seguir");
-                    int color = ContextCompat.getColor(requireContext(), R.color.purple_200);
+                    int color = ContextCompat.getColor(requireContext(), R.color.red);
                     bAccion.setBackgroundColor(color);
                     siguiendo = false;
                 }
 
             }
         });
-        db.collection("Usuarios").document(mailUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Usuarios").document(codAjeno).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot document = task.getResult();
-                ArrayList sig = (ArrayList) document.getData().get("siguiendo");
-                ArrayList seg = (ArrayList) document.getData().get("seguidores");
                 TextView numSeg = root.findViewById(R.id.numSeguidores);
                 TextView numSig = root.findViewById(R.id.numSeguidos);
-                numSeg.setText(""+seg.size());
-                numSig.setText(""+sig.size());
+                if (document.get("siguiendo") != null) {
+                    ArrayList sig = (ArrayList) document.get("siguiendo");
+                    numSig.setText(""+sig.size());
+                } else {
+                    numSig.setText("0");
+                }
+                if ((ArrayList) document.get("seguidores") != null) {
+                    ArrayList seg = (ArrayList) document.get("seguidores");
+                    numSeg.setText(""+seg.size());
+                } else {
+                    numSeg.setText("0");
+                }
+
+
             }
         });
 
         bAccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (!siguiendo) {
                     bAccion.setText("Siguiendo");
                     int color = ContextCompat.getColor(requireContext(), R.color.black);
                     bAccion.setBackgroundColor(color);
                     siguiendo = true;
-                    db.collection("Usuarios").document(mailPropio).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    db.collection("Usuarios").document(InicioSesion.codusuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot document = task.getResult();
-                            ArrayList sig = (ArrayList) document.getData().get("siguiendo");
-                            sig.add("" + mailUsuario);
-                            db.collection("Usuarios").document(mailPropio).update("siguiendo", sig);
+                            ArrayList sig = (ArrayList) document.get("siguiendo");
+                            sig.add("" + codAjeno);
+                            db.collection("Usuarios").document(InicioSesion.codusuario).update("siguiendo", sig);
                             siguiendo = true;
                         }
                     });
-                    db.collection("Usuarios").document(mailUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    db.collection("Usuarios").document(codAjeno).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot document = task.getResult();
-                            ArrayList seg = (ArrayList) document.getData().get("seguidores");
-                            seg.add("" + mailPropio);
-                            db.collection("Usuarios").document(mailUsuario).update("seguidores", seg);
+                            ArrayList seg = (ArrayList) document.get("seguidores");
+                            seg.add("" + InicioSesion.codusuario);
+                            db.collection("Usuarios").document(codAjeno).update("seguidores", seg);
                             siguiendo = true;
                         }
                     });
                 } else {
                     if (siguiendo) {
                         bAccion.setText("Seguir");
-                        int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
+                        int color = ContextCompat.getColor(requireContext(), R.color.red);
                         bAccion.setBackgroundColor(color);
                         siguiendo = false;
-                        db.collection("Usuarios").document(mailPropio).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        db.collection("Usuarios").document(InicioSesion.codusuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document = task.getResult();
-                                ArrayList sig = (ArrayList) document.getData().get("siguiendo");
-                                sig.remove("" + mailUsuario);
-                                db.collection("Usuarios").document(mailPropio).update("siguiendo", sig);
+                                ArrayList sig = (ArrayList) document.get("siguiendo");
+                                sig.remove("" + codAjeno);
+                                db.collection("Usuarios").document(InicioSesion.codusuario).update("siguiendo", sig);
                                 siguiendo = false;
                             }
                         });
-                        db.collection("Usuarios").document(mailUsuario).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        db.collection("Usuarios").document(codAjeno).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document = task.getResult();
                                 ArrayList seg = (ArrayList) document.getData().get("seguidores");
-                                seg.remove("" + mailPropio);
-                                db.collection("Usuarios").document(mailUsuario).update("seguidores", seg);
+                                seg.remove("" + InicioSesion.codusuario);
+                                db.collection("Usuarios").document(codAjeno).update("seguidores", seg);
                                 siguiendo = false;
                             }
                         });

@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,7 @@ public class InicioSesion extends AppCompatActivity {
     public static String emailusuario = new String();
     public static String emailempresa = new String();
     public static String codusuario = new String();
+    public static String codempresa = new String();
 
 
     @Override
@@ -50,42 +53,74 @@ public class InicioSesion extends AppCompatActivity {
         biniciarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Usuarios").document(email.getText().toString()).get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        DocumentSnapshot d = documentSnapshot;
-                        if (pass.getText().toString().equals(d.getString("contraseña"))) {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            nombreusuario = d.getString("username");
-                            emailusuario = d.getString("email");
-                            codusuario = d.getId();
-                            startActivity(i);
-                        } else {
-                            db.collection("Empresas").document(email.getText().toString()).get()
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            DocumentSnapshot d = documentSnapshot;
-                                            if (pass.getText().toString().equals(d.getString("password"))) {
-                                                Intent i = new Intent(getApplicationContext(), MainActivity2.class);
-                                                emailempresa = d.getString("email");
-                                                nombreempresa = d.getString("nombre");
-                                                startActivity(i);
-                                            } else {
-                                                Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(InicioSesion.this, "La cuenta con el correo electronico introducido no existe", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
+                if (!email.getText().toString().equals("") && !pass.getText().toString().equals("")) {
+                    db.collection("Usuarios").whereEqualTo("email", email.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot d: queryDocumentSnapshots) {
+                                if (pass.getText().toString().equals(d.getString("contraseña"))) {
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    nombreusuario = d.getString("username");
+                                    emailusuario = d.getString("email");
+                                    codusuario = d.getId();
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(InicioSesion.this, "Contraseña Usuario Incorrecta", Toast.LENGTH_SHORT).show();
+                                }
 
-                    }
-                });
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+
+                        }
+                    });
+                    db.collection("Empresas").whereEqualTo("email", email.getText().toString()).get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot d: queryDocumentSnapshots) {
+                                        if (pass.getText().toString().equals(d.getString("password"))) {
+                                            Intent i = new Intent(getApplicationContext(), MainActivity2.class);
+                                            emailempresa = d.getString("email");
+                                            nombreempresa = d.getString("nombre");
+                                            codempresa = d.getId();
+                                            startActivity(i);
+                                        } else {
+                                            Toast.makeText(InicioSesion.this, "Contraseña Empresa Incorrecta", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+                    db.collection("Administradores").whereEqualTo("email", email.getText().toString()).get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot d: queryDocumentSnapshots) {
+                                        if (pass.getText().toString().equals(d.getString("password"))) {
+                                            Intent i = new Intent(getApplicationContext(), MainActivity3.class);
+                                            startActivity(i);
+                                        } else {
+                                            Toast.makeText(InicioSesion.this, "Contraseña Administrador Incorrecta", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(InicioSesion.this, "Contraseña Incorrecta", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(InicioSesion.this, "Introduce los datos en sus respectivos campos", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

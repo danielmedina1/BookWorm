@@ -94,11 +94,11 @@ public class MostrarLibroFragment extends Fragment {
 
             if (stockLibro >= 1) {
                 bcarrito.setText("Añadir a pedidos");
-                int color = ContextCompat.getColor(requireContext(), R.color.purple_700);
+                int color = ContextCompat.getColor(requireContext(), R.color.red);
                 bcarrito.setBackgroundColor(color);
             } else {
                 bcarrito.setText("Sin stock");
-                int color = ContextCompat.getColor(requireContext(), R.color.black);
+                int color = ContextCompat.getColor(requireContext(), R.color.impred);
                 bcarrito.setBackgroundColor(color);
                 bcarrito.setEnabled(false);
             }
@@ -108,6 +108,7 @@ public class MostrarLibroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (stockLibro >= 1) {
+                    stockLibro = stockLibro - 1;
                     db.collection("Usuarios").document(InicioSesion.codusuario).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -119,6 +120,7 @@ public class MostrarLibroFragment extends Fragment {
                                 db.collection("Usuarios").document(InicioSesion.codusuario)
                                         .update("carrito", librosPedidos);
                             }
+                            db.collection("Libros").document(idLibro).update("stock", stockLibro);
 
 
                         }
@@ -136,6 +138,7 @@ public class MostrarLibroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ResenasFragment.tituloLibro = tituloLibro;
+                ResenasFragment.idLibro = idLibro;
                 ResenasFragment.usuario = InicioSesion.nombreusuario;
                 NavHostFragment.findNavController(ml).navigate(R.id.action_nav_mostrarLibro_to_nav_resenasLibros);
             }
@@ -149,7 +152,7 @@ public class MostrarLibroFragment extends Fragment {
         val.setIsIndicator(true);
 
         db.collection("Reviews")
-                .whereEqualTo("libro", b)
+                .whereEqualTo("libro", idLibro)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -162,9 +165,9 @@ public class MostrarLibroFragment extends Fragment {
                                 Date fecha = ts.toDate();
                                 String libro = document.getData().get("libro") + "";
                                 String usuario = document.getData().get("usuario") + "";
-                                String mail = document.getData().get("emailusuario") + "";
+                                String coduser = document.getData().get("codusuario") + "";
                                 float valoracion = Float.parseFloat(document.getData().get("puntuacion") + "");
-                                ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario, mail));
+                                ListaReseñas.reseñas.add(new Review(descripcion, fecha, libro, valoracion, usuario, coduser));
                                 val.setRating(calcularPuntuacion(b));
                                 ListaReseñas.miAdaptador.notifyDataSetChanged();
 

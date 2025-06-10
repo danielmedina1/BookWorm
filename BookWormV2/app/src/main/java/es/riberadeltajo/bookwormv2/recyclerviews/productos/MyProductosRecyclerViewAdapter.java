@@ -51,7 +51,8 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
         cant = 0;
         holder.mNombreProducto.setText(mValues.get(position).getNombre());
         holder.mAutorProducto.setText(mValues.get(position).getAutor());
-        db.collection("Empresas").document(mValues.get(position).getEmpresa()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("Empresas").document(mValues.get(position).getEmpresa())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot d = task.getResult();
@@ -76,6 +77,7 @@ public class MyProductosRecyclerViewAdapter extends RecyclerView.Adapter<MyProdu
             public void onClick(View v) {
                 productos.clear();
                 ListaProductos.listaLibros.remove(position);
+                ListaProductos.listaProductos.remove(position);
                 notifyItemRemoved(position);
                 ListaProductos.miAdaptador.notifyDataSetChanged();
                 for (int i = 0; i < ListaProductos.listaLibros.size(); i++) {

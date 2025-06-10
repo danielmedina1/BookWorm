@@ -39,12 +39,13 @@ public class GestionFragment extends Fragment {
         binding = FragmentGestionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button bAñadir = root.findViewById(R.id.botonAñadirLibro);
-        db.collection("Libros").whereEqualTo("empresa", InicioSesion.emailempresa)
+        db.collection("Libros").whereEqualTo("empresa", InicioSesion.codempresa)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         ListaGestion.listaGestion.clear();
                         for(QueryDocumentSnapshot d : task.getResult()) {
+                            String idLibro = d.getId();
                             String nombre = d.getData().get("nombre") + "";
                             String autor = d.getData().get("autor") + "";
                             String sinopsis = d.getData().get("sinopsis") + "";
@@ -53,7 +54,7 @@ public class GestionFragment extends Fragment {
                             long isbn = Long.parseLong(d.getData().get("isbn") + "");
                             int stock = Integer.parseInt(d.getData().get("stock") + "");
                             String empresa = d.getData().get("empresa") + "";
-                            Libro l = new Libro(nombre, autor, sinopsis, puntuacion, precio, isbn, stock, empresa);
+                            Libro l = new Libro(nombre, autor, sinopsis, puntuacion, precio, isbn, stock, empresa, idLibro);
                             ListaGestion.listaGestion.add(l);
                             ListaGestion.miAdaptador.notifyDataSetChanged();
                         }

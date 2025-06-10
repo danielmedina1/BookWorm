@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import es.riberadeltajo.bookwormv2.R;
 import es.riberadeltajo.bookwormv2.clases.Libro;
 import es.riberadeltajo.bookwormv2.databinding.FragmentGestionLibrosBinding;
+import es.riberadeltajo.bookwormv2.recyclerviews.empresas.ListaEmpresas;
 
 import java.util.List;
 
@@ -72,7 +73,8 @@ public class MyGestionLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyG
                             });
                     db.collection("Libros").document(titulo).delete();
                 }
-
+                ListaEmpresas.listEmpresas.clear();
+                ListaEmpresas.miAdaptador.notifyDataSetChanged();
             }
         });
         holder.mBotonEditar.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +88,7 @@ public class MyGestionLibrosRecyclerViewAdapter extends RecyclerView.Adapter<MyG
                 b.putDouble("precio", mValues.get(position).getPrecio());
                 b.putInt("stock", mValues.get(position).getStock());
                 b.putString("sinopsis", mValues.get(position).getSinopsis().toString());
+                b.putString("idLibro", mValues.get(position).getIdLibro().toString());
                 nc.navigate(R.id.action_nav_gestion_to_nav_editar, b);
             }
         });

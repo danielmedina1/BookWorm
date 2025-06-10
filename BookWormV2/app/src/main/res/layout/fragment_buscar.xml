@@ -11,9 +11,10 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2"
         android:name="es.riberadeltajo.bookwormv2.recyclerviews.libros.LibrosFragment"
-        android:layout_width="415dp"
-        android:layout_height="783dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,8 +22,9 @@
 
     <EditText
         android:id="@+id/buscarLibro"
-        android:layout_width="372dp"
-        android:layout_height="70dp"
+        android:layout_width="365dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/border_background"
         android:backgroundTintMode="src_atop"
         android:breakStrategy="simple"
@@ -40,10 +42,7 @@
         android:textColor="@color/impred"
         android:textColorHint="@color/impred"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.589"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

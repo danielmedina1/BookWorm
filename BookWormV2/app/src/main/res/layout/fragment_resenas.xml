@@ -4,18 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/jet"
     tools:context=".usuario.reseñas.ResenasFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/jet">
 
         <EditText
             android:id="@+id/reseñaTexto"
-            android:layout_width="405dp"
-            android:layout_height="68dp"
+            android:layout_width="403dp"
+            android:layout_height="79dp"
+            android:background="@drawable/border_background"
             android:ems="10"
             android:inputType="text"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/impred"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +31,13 @@
 
         <TextView
             android:id="@+id/resenaLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="340dp"
+            android:layout_height="75dp"
+            android:background="@drawable/border"
+            android:paddingTop="15dp"
             android:text="Deja aquí tu reseña"
+            android:textAlignment="center"
+            android:textColor="@color/red"
             android:textSize="34sp"
             app:layout_constraintBottom_toTopOf="@+id/reseñaTexto"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,9 +46,13 @@
 
         <TextView
             android:id="@+id/puntuacionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="257dp"
+            android:layout_height="64dp"
+            android:background="@drawable/border"
+            android:paddingTop="10dp"
             android:text="Puntuación"
+            android:textAlignment="center"
+            android:textColor="@color/red"
             android:textSize="34sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +62,14 @@
 
         <RatingBar
             android:id="@+id/puntuacionReseña"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="278dp"
+            android:layout_height="85dp"
+            android:background="@drawable/border_background"
+            android:max="5"
+            android:paddingLeft="15dp"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
